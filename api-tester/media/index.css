@@ -1,0 +1,1730 @@
+@font-face {
+  font-family: codicon;
+  font-display: block;
+  src: url("codicon.1dce870c.ttf") format("truetype");
+}
+
+.codicon[class*="codicon-"] {
+  text-rendering: auto;
+  text-align: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  user-select: none;
+  font: 16px / 1 codicon;
+  text-decoration: none;
+  display: inline-block;
+}
+
+@keyframes codicon-spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.codicon-sync.codicon-modifier-spin, .codicon-loading.codicon-modifier-spin, .codicon-gear.codicon-modifier-spin {
+  animation: codicon-spin 1.5s steps(30, end) infinite;
+}
+
+.codicon-modifier-disabled {
+  opacity: .5;
+}
+
+.codicon-modifier-hidden {
+  opacity: 0;
+}
+
+.codicon-loading {
+  animation-duration: 1s !important;
+  animation-timing-function: cubic-bezier(.53, .21, .29, .67) !important;
+}
+
+.codicon-add:before, .codicon-plus:before, .codicon-gist-new:before, .codicon-repo-create:before {
+  content: "";
+}
+
+.codicon-lightbulb:before, .codicon-light-bulb:before {
+  content: "";
+}
+
+.codicon-repo:before, .codicon-repo-delete:before {
+  content: "";
+}
+
+.codicon-gist-fork:before, .codicon-repo-forked:before {
+  content: "";
+}
+
+.codicon-git-pull-request:before, .codicon-git-pull-request-abandoned:before {
+  content: "";
+}
+
+.codicon-record-keys:before, .codicon-keyboard:before {
+  content: "";
+}
+
+.codicon-tag:before, .codicon-tag-add:before, .codicon-tag-remove:before {
+  content: "";
+}
+
+.codicon-person:before, .codicon-person-follow:before, .codicon-person-outline:before, .codicon-person-filled:before {
+  content: "";
+}
+
+.codicon-git-branch:before, .codicon-git-branch-create:before, .codicon-git-branch-delete:before, .codicon-source-control:before {
+  content: "";
+}
+
+.codicon-mirror:before, .codicon-mirror-public:before {
+  content: "";
+}
+
+.codicon-star:before, .codicon-star-add:before, .codicon-star-delete:before, .codicon-star-empty:before {
+  content: "";
+}
+
+.codicon-comment:before, .codicon-comment-add:before {
+  content: "";
+}
+
+.codicon-alert:before, .codicon-warning:before {
+  content: "";
+}
+
+.codicon-search:before, .codicon-search-save:before {
+  content: "";
+}
+
+.codicon-log-out:before, .codicon-sign-out:before {
+  content: "";
+}
+
+.codicon-log-in:before, .codicon-sign-in:before {
+  content: "";
+}
+
+.codicon-eye:before, .codicon-eye-unwatch:before, .codicon-eye-watch:before {
+  content: "";
+}
+
+.codicon-circle-filled:before, .codicon-primitive-dot:before, .codicon-close-dirty:before, .codicon-debug-breakpoint:before, .codicon-debug-breakpoint-disabled:before, .codicon-debug-hint:before {
+  content: "";
+}
+
+.codicon-primitive-square:before {
+  content: "";
+}
+
+.codicon-edit:before, .codicon-pencil:before {
+  content: "";
+}
+
+.codicon-info:before, .codicon-issue-opened:before {
+  content: "";
+}
+
+.codicon-gist-private:before, .codicon-git-fork-private:before, .codicon-lock:before, .codicon-mirror-private:before {
+  content: "";
+}
+
+.codicon-close:before, .codicon-remove-close:before, .codicon-x:before {
+  content: "";
+}
+
+.codicon-repo-sync:before, .codicon-sync:before {
+  content: "";
+}
+
+.codicon-clone:before, .codicon-desktop-download:before {
+  content: "";
+}
+
+.codicon-beaker:before, .codicon-microscope:before {
+  content: "";
+}
+
+.codicon-vm:before, .codicon-device-desktop:before {
+  content: "";
+}
+
+.codicon-file:before, .codicon-file-text:before {
+  content: "";
+}
+
+.codicon-more:before, .codicon-ellipsis:before, .codicon-kebab-horizontal:before {
+  content: "";
+}
+
+.codicon-mail-reply:before, .codicon-reply:before {
+  content: "";
+}
+
+.codicon-organization:before, .codicon-organization-filled:before, .codicon-organization-outline:before {
+  content: "";
+}
+
+.codicon-new-file:before, .codicon-file-add:before {
+  content: "";
+}
+
+.codicon-new-folder:before, .codicon-file-directory-create:before {
+  content: "";
+}
+
+.codicon-trash:before, .codicon-trashcan:before {
+  content: "";
+}
+
+.codicon-history:before, .codicon-clock:before {
+  content: "";
+}
+
+.codicon-folder:before, .codicon-file-directory:before, .codicon-symbol-folder:before {
+  content: "";
+}
+
+.codicon-logo-github:before, .codicon-mark-github:before, .codicon-github:before {
+  content: "";
+}
+
+.codicon-terminal:before, .codicon-console:before, .codicon-repl:before {
+  content: "";
+}
+
+.codicon-zap:before, .codicon-symbol-event:before {
+  content: "";
+}
+
+.codicon-error:before, .codicon-stop:before {
+  content: "";
+}
+
+.codicon-variable:before, .codicon-symbol-variable:before {
+  content: "";
+}
+
+.codicon-array:before, .codicon-symbol-array:before {
+  content: "";
+}
+
+.codicon-symbol-module:before, .codicon-symbol-package:before, .codicon-symbol-namespace:before, .codicon-symbol-object:before {
+  content: "";
+}
+
+.codicon-symbol-method:before, .codicon-symbol-function:before, .codicon-symbol-constructor:before {
+  content: "";
+}
+
+.codicon-symbol-boolean:before, .codicon-symbol-null:before {
+  content: "";
+}
+
+.codicon-symbol-numeric:before, .codicon-symbol-number:before {
+  content: "";
+}
+
+.codicon-symbol-structure:before, .codicon-symbol-struct:before {
+  content: "";
+}
+
+.codicon-symbol-parameter:before, .codicon-symbol-type-parameter:before {
+  content: "";
+}
+
+.codicon-symbol-key:before, .codicon-symbol-text:before {
+  content: "";
+}
+
+.codicon-symbol-reference:before, .codicon-go-to-file:before {
+  content: "";
+}
+
+.codicon-symbol-enum:before, .codicon-symbol-value:before {
+  content: "";
+}
+
+.codicon-symbol-ruler:before, .codicon-symbol-unit:before {
+  content: "";
+}
+
+.codicon-activate-breakpoints:before {
+  content: "";
+}
+
+.codicon-archive:before {
+  content: "";
+}
+
+.codicon-arrow-both:before {
+  content: "";
+}
+
+.codicon-arrow-down:before {
+  content: "";
+}
+
+.codicon-arrow-left:before {
+  content: "";
+}
+
+.codicon-arrow-right:before {
+  content: "";
+}
+
+.codicon-arrow-small-down:before {
+  content: "";
+}
+
+.codicon-arrow-small-left:before {
+  content: "";
+}
+
+.codicon-arrow-small-right:before {
+  content: "";
+}
+
+.codicon-arrow-small-up:before {
+  content: "";
+}
+
+.codicon-arrow-up:before {
+  content: "";
+}
+
+.codicon-bell:before {
+  content: "";
+}
+
+.codicon-bold:before {
+  content: "";
+}
+
+.codicon-book:before {
+  content: "";
+}
+
+.codicon-bookmark:before {
+  content: "";
+}
+
+.codicon-debug-breakpoint-conditional-unverified:before {
+  content: "";
+}
+
+.codicon-debug-breakpoint-conditional:before, .codicon-debug-breakpoint-conditional-disabled:before {
+  content: "";
+}
+
+.codicon-debug-breakpoint-data-unverified:before {
+  content: "";
+}
+
+.codicon-debug-breakpoint-data:before, .codicon-debug-breakpoint-data-disabled:before {
+  content: "";
+}
+
+.codicon-debug-breakpoint-log-unverified:before {
+  content: "";
+}
+
+.codicon-debug-breakpoint-log:before, .codicon-debug-breakpoint-log-disabled:before {
+  content: "";
+}
+
+.codicon-briefcase:before {
+  content: "";
+}
+
+.codicon-broadcast:before {
+  content: "";
+}
+
+.codicon-browser:before {
+  content: "";
+}
+
+.codicon-bug:before {
+  content: "";
+}
+
+.codicon-calendar:before {
+  content: "";
+}
+
+.codicon-case-sensitive:before {
+  content: "";
+}
+
+.codicon-check:before {
+  content: "";
+}
+
+.codicon-checklist:before {
+  content: "";
+}
+
+.codicon-chevron-down:before {
+  content: "";
+}
+
+.codicon-chevron-left:before {
+  content: "";
+}
+
+.codicon-chevron-right:before {
+  content: "";
+}
+
+.codicon-chevron-up:before {
+  content: "";
+}
+
+.codicon-chrome-close:before {
+  content: "";
+}
+
+.codicon-chrome-maximize:before {
+  content: "";
+}
+
+.codicon-chrome-minimize:before {
+  content: "";
+}
+
+.codicon-chrome-restore:before {
+  content: "";
+}
+
+.codicon-circle-outline:before, .codicon-debug-breakpoint-unverified:before {
+  content: "";
+}
+
+.codicon-circle-slash:before {
+  content: "";
+}
+
+.codicon-circuit-board:before {
+  content: "";
+}
+
+.codicon-clear-all:before {
+  content: "";
+}
+
+.codicon-clippy:before {
+  content: "";
+}
+
+.codicon-close-all:before {
+  content: "";
+}
+
+.codicon-cloud-download:before {
+  content: "";
+}
+
+.codicon-cloud-upload:before {
+  content: "";
+}
+
+.codicon-code:before {
+  content: "";
+}
+
+.codicon-collapse-all:before {
+  content: "";
+}
+
+.codicon-color-mode:before {
+  content: "";
+}
+
+.codicon-comment-discussion:before {
+  content: "";
+}
+
+.codicon-credit-card:before {
+  content: "";
+}
+
+.codicon-dash:before {
+  content: "";
+}
+
+.codicon-dashboard:before {
+  content: "";
+}
+
+.codicon-database:before {
+  content: "";
+}
+
+.codicon-debug-continue:before {
+  content: "";
+}
+
+.codicon-debug-disconnect:before {
+  content: "";
+}
+
+.codicon-debug-pause:before {
+  content: "";
+}
+
+.codicon-debug-restart:before {
+  content: "";
+}
+
+.codicon-debug-start:before {
+  content: "";
+}
+
+.codicon-debug-step-into:before {
+  content: "";
+}
+
+.codicon-debug-step-out:before {
+  content: "";
+}
+
+.codicon-debug-step-over:before {
+  content: "";
+}
+
+.codicon-debug-stop:before {
+  content: "";
+}
+
+.codicon-debug:before {
+  content: "";
+}
+
+.codicon-device-camera-video:before {
+  content: "";
+}
+
+.codicon-device-camera:before {
+  content: "";
+}
+
+.codicon-device-mobile:before {
+  content: "";
+}
+
+.codicon-diff-added:before {
+  content: "";
+}
+
+.codicon-diff-ignored:before {
+  content: "";
+}
+
+.codicon-diff-modified:before {
+  content: "";
+}
+
+.codicon-diff-removed:before {
+  content: "";
+}
+
+.codicon-diff-renamed:before {
+  content: "";
+}
+
+.codicon-diff:before {
+  content: "";
+}
+
+.codicon-discard:before {
+  content: "";
+}
+
+.codicon-editor-layout:before {
+  content: "";
+}
+
+.codicon-empty-window:before {
+  content: "";
+}
+
+.codicon-exclude:before {
+  content: "";
+}
+
+.codicon-extensions:before {
+  content: "";
+}
+
+.codicon-eye-closed:before {
+  content: "";
+}
+
+.codicon-file-binary:before {
+  content: "";
+}
+
+.codicon-file-code:before {
+  content: "";
+}
+
+.codicon-file-media:before {
+  content: "";
+}
+
+.codicon-file-pdf:before {
+  content: "";
+}
+
+.codicon-file-submodule:before {
+  content: "";
+}
+
+.codicon-file-symlink-directory:before {
+  content: "";
+}
+
+.codicon-file-symlink-file:before {
+  content: "";
+}
+
+.codicon-file-zip:before {
+  content: "";
+}
+
+.codicon-files:before {
+  content: "";
+}
+
+.codicon-filter:before {
+  content: "";
+}
+
+.codicon-flame:before {
+  content: "";
+}
+
+.codicon-fold-down:before {
+  content: "";
+}
+
+.codicon-fold-up:before {
+  content: "";
+}
+
+.codicon-fold:before {
+  content: "";
+}
+
+.codicon-folder-active:before {
+  content: "";
+}
+
+.codicon-folder-opened:before {
+  content: "";
+}
+
+.codicon-gear:before {
+  content: "";
+}
+
+.codicon-gift:before {
+  content: "";
+}
+
+.codicon-gist-secret:before {
+  content: "";
+}
+
+.codicon-gist:before {
+  content: "";
+}
+
+.codicon-git-commit:before {
+  content: "";
+}
+
+.codicon-git-compare:before, .codicon-compare-changes:before {
+  content: "";
+}
+
+.codicon-git-merge:before {
+  content: "";
+}
+
+.codicon-github-action:before {
+  content: "";
+}
+
+.codicon-github-alt:before {
+  content: "";
+}
+
+.codicon-globe:before {
+  content: "";
+}
+
+.codicon-grabber:before {
+  content: "";
+}
+
+.codicon-graph:before {
+  content: "";
+}
+
+.codicon-gripper:before {
+  content: "";
+}
+
+.codicon-heart:before {
+  content: "";
+}
+
+.codicon-home:before {
+  content: "";
+}
+
+.codicon-horizontal-rule:before {
+  content: "";
+}
+
+.codicon-hubot:before {
+  content: "";
+}
+
+.codicon-inbox:before {
+  content: "";
+}
+
+.codicon-issue-reopened:before {
+  content: "";
+}
+
+.codicon-issues:before {
+  content: "";
+}
+
+.codicon-italic:before {
+  content: "";
+}
+
+.codicon-jersey:before {
+  content: "";
+}
+
+.codicon-json:before {
+  content: "";
+}
+
+.codicon-kebab-vertical:before {
+  content: "";
+}
+
+.codicon-key:before {
+  content: "";
+}
+
+.codicon-law:before {
+  content: "";
+}
+
+.codicon-lightbulb-autofix:before {
+  content: "";
+}
+
+.codicon-link-external:before {
+  content: "";
+}
+
+.codicon-link:before {
+  content: "";
+}
+
+.codicon-list-ordered:before {
+  content: "";
+}
+
+.codicon-list-unordered:before {
+  content: "";
+}
+
+.codicon-live-share:before {
+  content: "";
+}
+
+.codicon-loading:before {
+  content: "";
+}
+
+.codicon-location:before {
+  content: "";
+}
+
+.codicon-mail-read:before {
+  content: "";
+}
+
+.codicon-mail:before {
+  content: "";
+}
+
+.codicon-markdown:before {
+  content: "";
+}
+
+.codicon-megaphone:before {
+  content: "";
+}
+
+.codicon-mention:before {
+  content: "";
+}
+
+.codicon-milestone:before {
+  content: "";
+}
+
+.codicon-mortar-board:before {
+  content: "";
+}
+
+.codicon-move:before {
+  content: "";
+}
+
+.codicon-multiple-windows:before {
+  content: "";
+}
+
+.codicon-mute:before {
+  content: "";
+}
+
+.codicon-no-newline:before {
+  content: "";
+}
+
+.codicon-note:before {
+  content: "";
+}
+
+.codicon-octoface:before {
+  content: "";
+}
+
+.codicon-open-preview:before {
+  content: "";
+}
+
+.codicon-package:before {
+  content: "";
+}
+
+.codicon-paintcan:before {
+  content: "";
+}
+
+.codicon-pin:before {
+  content: "";
+}
+
+.codicon-play:before, .codicon-run:before {
+  content: "";
+}
+
+.codicon-plug:before {
+  content: "";
+}
+
+.codicon-preserve-case:before {
+  content: "";
+}
+
+.codicon-preview:before {
+  content: "";
+}
+
+.codicon-project:before {
+  content: "";
+}
+
+.codicon-pulse:before {
+  content: "";
+}
+
+.codicon-question:before {
+  content: "";
+}
+
+.codicon-quote:before {
+  content: "";
+}
+
+.codicon-radio-tower:before {
+  content: "";
+}
+
+.codicon-reactions:before {
+  content: "";
+}
+
+.codicon-references:before {
+  content: "";
+}
+
+.codicon-refresh:before {
+  content: "";
+}
+
+.codicon-regex:before {
+  content: "";
+}
+
+.codicon-remote-explorer:before {
+  content: "";
+}
+
+.codicon-remote:before {
+  content: "";
+}
+
+.codicon-remove:before {
+  content: "";
+}
+
+.codicon-replace-all:before {
+  content: "";
+}
+
+.codicon-replace:before {
+  content: "";
+}
+
+.codicon-repo-clone:before {
+  content: "";
+}
+
+.codicon-repo-force-push:before {
+  content: "";
+}
+
+.codicon-repo-pull:before {
+  content: "";
+}
+
+.codicon-repo-push:before {
+  content: "";
+}
+
+.codicon-report:before {
+  content: "";
+}
+
+.codicon-request-changes:before {
+  content: "";
+}
+
+.codicon-rocket:before {
+  content: "";
+}
+
+.codicon-root-folder-opened:before {
+  content: "";
+}
+
+.codicon-root-folder:before {
+  content: "";
+}
+
+.codicon-rss:before {
+  content: "";
+}
+
+.codicon-ruby:before {
+  content: "";
+}
+
+.codicon-save-all:before {
+  content: "";
+}
+
+.codicon-save-as:before {
+  content: "";
+}
+
+.codicon-save:before {
+  content: "";
+}
+
+.codicon-screen-full:before {
+  content: "";
+}
+
+.codicon-screen-normal:before {
+  content: "";
+}
+
+.codicon-search-stop:before {
+  content: "";
+}
+
+.codicon-server:before {
+  content: "";
+}
+
+.codicon-settings-gear:before {
+  content: "";
+}
+
+.codicon-settings:before {
+  content: "";
+}
+
+.codicon-shield:before {
+  content: "";
+}
+
+.codicon-smiley:before {
+  content: "";
+}
+
+.codicon-sort-precedence:before {
+  content: "";
+}
+
+.codicon-split-horizontal:before {
+  content: "";
+}
+
+.codicon-split-vertical:before {
+  content: "";
+}
+
+.codicon-squirrel:before {
+  content: "";
+}
+
+.codicon-star-full:before {
+  content: "";
+}
+
+.codicon-star-half:before {
+  content: "";
+}
+
+.codicon-symbol-class:before {
+  content: "";
+}
+
+.codicon-symbol-color:before {
+  content: "";
+}
+
+.codicon-symbol-constant:before {
+  content: "";
+}
+
+.codicon-symbol-enum-member:before {
+  content: "";
+}
+
+.codicon-symbol-field:before {
+  content: "";
+}
+
+.codicon-symbol-file:before {
+  content: "";
+}
+
+.codicon-symbol-interface:before {
+  content: "";
+}
+
+.codicon-symbol-keyword:before {
+  content: "";
+}
+
+.codicon-symbol-misc:before {
+  content: "";
+}
+
+.codicon-symbol-operator:before {
+  content: "";
+}
+
+.codicon-symbol-property:before, .codicon-wrench:before, .codicon-wrench-subaction:before {
+  content: "";
+}
+
+.codicon-symbol-snippet:before {
+  content: "";
+}
+
+.codicon-tasklist:before {
+  content: "";
+}
+
+.codicon-telescope:before {
+  content: "";
+}
+
+.codicon-text-size:before {
+  content: "";
+}
+
+.codicon-three-bars:before {
+  content: "";
+}
+
+.codicon-thumbsdown:before {
+  content: "";
+}
+
+.codicon-thumbsup:before {
+  content: "";
+}
+
+.codicon-tools:before {
+  content: "";
+}
+
+.codicon-triangle-down:before {
+  content: "";
+}
+
+.codicon-triangle-left:before {
+  content: "";
+}
+
+.codicon-triangle-right:before {
+  content: "";
+}
+
+.codicon-triangle-up:before {
+  content: "";
+}
+
+.codicon-twitter:before {
+  content: "";
+}
+
+.codicon-unfold:before {
+  content: "";
+}
+
+.codicon-unlock:before {
+  content: "";
+}
+
+.codicon-unmute:before {
+  content: "";
+}
+
+.codicon-unverified:before {
+  content: "";
+}
+
+.codicon-verified:before {
+  content: "";
+}
+
+.codicon-versions:before {
+  content: "";
+}
+
+.codicon-vm-active:before {
+  content: "";
+}
+
+.codicon-vm-outline:before {
+  content: "";
+}
+
+.codicon-vm-running:before {
+  content: "";
+}
+
+.codicon-watch:before {
+  content: "";
+}
+
+.codicon-whitespace:before {
+  content: "";
+}
+
+.codicon-whole-word:before {
+  content: "";
+}
+
+.codicon-window:before {
+  content: "";
+}
+
+.codicon-word-wrap:before {
+  content: "";
+}
+
+.codicon-zoom-in:before {
+  content: "";
+}
+
+.codicon-zoom-out:before {
+  content: "";
+}
+
+.codicon-list-filter:before {
+  content: "";
+}
+
+.codicon-list-flat:before {
+  content: "";
+}
+
+.codicon-list-selection:before, .codicon-selection:before {
+  content: "";
+}
+
+.codicon-list-tree:before {
+  content: "";
+}
+
+.codicon-debug-breakpoint-function-unverified:before {
+  content: "";
+}
+
+.codicon-debug-breakpoint-function:before, .codicon-debug-breakpoint-function-disabled:before {
+  content: "";
+}
+
+.codicon-debug-stackframe-active:before {
+  content: "";
+}
+
+.codicon-circle-small-filled:before, .codicon-debug-stackframe-dot:before {
+  content: "";
+}
+
+.codicon-debug-stackframe:before, .codicon-debug-stackframe-focused:before {
+  content: "";
+}
+
+.codicon-debug-breakpoint-unsupported:before {
+  content: "";
+}
+
+.codicon-symbol-string:before {
+  content: "";
+}
+
+.codicon-debug-reverse-continue:before {
+  content: "";
+}
+
+.codicon-debug-step-back:before {
+  content: "";
+}
+
+.codicon-debug-restart-frame:before {
+  content: "";
+}
+
+.codicon-debug-alt:before {
+  content: "";
+}
+
+.codicon-call-incoming:before {
+  content: "";
+}
+
+.codicon-call-outgoing:before {
+  content: "";
+}
+
+.codicon-menu:before {
+  content: "";
+}
+
+.codicon-expand-all:before {
+  content: "";
+}
+
+.codicon-feedback:before {
+  content: "";
+}
+
+.codicon-group-by-ref-type:before {
+  content: "";
+}
+
+.codicon-ungroup-by-ref-type:before {
+  content: "";
+}
+
+.codicon-account:before {
+  content: "";
+}
+
+.codicon-bell-dot:before {
+  content: "";
+}
+
+.codicon-debug-console:before {
+  content: "";
+}
+
+.codicon-library:before {
+  content: "";
+}
+
+.codicon-output:before {
+  content: "";
+}
+
+.codicon-run-all:before {
+  content: "";
+}
+
+.codicon-sync-ignored:before {
+  content: "";
+}
+
+.codicon-pinned:before {
+  content: "";
+}
+
+.codicon-github-inverted:before {
+  content: "";
+}
+
+.codicon-server-process:before {
+  content: "";
+}
+
+.codicon-server-environment:before {
+  content: "";
+}
+
+.codicon-pass:before, .codicon-issue-closed:before {
+  content: "";
+}
+
+.codicon-stop-circle:before {
+  content: "";
+}
+
+.codicon-play-circle:before {
+  content: "";
+}
+
+.codicon-record:before {
+  content: "";
+}
+
+.codicon-debug-alt-small:before {
+  content: "";
+}
+
+.codicon-vm-connect:before {
+  content: "";
+}
+
+.codicon-cloud:before {
+  content: "";
+}
+
+.codicon-merge:before {
+  content: "";
+}
+
+.codicon-export:before {
+  content: "";
+}
+
+.codicon-graph-left:before {
+  content: "";
+}
+
+.codicon-magnet:before {
+  content: "";
+}
+
+.codicon-notebook:before {
+  content: "";
+}
+
+.codicon-redo:before {
+  content: "";
+}
+
+.codicon-check-all:before {
+  content: "";
+}
+
+.codicon-pinned-dirty:before {
+  content: "";
+}
+
+.codicon-pass-filled:before {
+  content: "";
+}
+
+.codicon-circle-large-filled:before {
+  content: "";
+}
+
+.codicon-circle-large-outline:before {
+  content: "";
+}
+
+.codicon-combine:before, .codicon-gather:before {
+  content: "";
+}
+
+.codicon-table:before {
+  content: "";
+}
+
+.codicon-variable-group:before {
+  content: "";
+}
+
+.codicon-type-hierarchy:before {
+  content: "";
+}
+
+.codicon-type-hierarchy-sub:before {
+  content: "";
+}
+
+.codicon-type-hierarchy-super:before {
+  content: "";
+}
+
+.codicon-git-pull-request-create:before {
+  content: "";
+}
+
+.codicon-run-above:before {
+  content: "";
+}
+
+.codicon-run-below:before {
+  content: "";
+}
+
+.codicon-notebook-template:before {
+  content: "";
+}
+
+.codicon-debug-rerun:before {
+  content: "";
+}
+
+.codicon-workspace-trusted:before {
+  content: "";
+}
+
+.codicon-workspace-untrusted:before {
+  content: "";
+}
+
+.codicon-workspace-unknown:before {
+  content: "";
+}
+
+.codicon-terminal-cmd:before {
+  content: "";
+}
+
+.codicon-terminal-debian:before {
+  content: "";
+}
+
+.codicon-terminal-linux:before {
+  content: "";
+}
+
+.codicon-terminal-powershell:before {
+  content: "";
+}
+
+.codicon-terminal-tmux:before {
+  content: "";
+}
+
+.codicon-terminal-ubuntu:before {
+  content: "";
+}
+
+.codicon-terminal-bash:before {
+  content: "";
+}
+
+.codicon-arrow-swap:before {
+  content: "";
+}
+
+.codicon-copy:before {
+  content: "";
+}
+
+.codicon-person-add:before {
+  content: "";
+}
+
+.codicon-filter-filled:before {
+  content: "";
+}
+
+.codicon-wand:before {
+  content: "";
+}
+
+.codicon-debug-line-by-line:before {
+  content: "";
+}
+
+.codicon-inspect:before {
+  content: "";
+}
+
+.codicon-layers:before {
+  content: "";
+}
+
+.codicon-layers-dot:before {
+  content: "";
+}
+
+.codicon-layers-active:before {
+  content: "";
+}
+
+.codicon-compass:before {
+  content: "";
+}
+
+.codicon-compass-dot:before {
+  content: "";
+}
+
+.codicon-compass-active:before {
+  content: "";
+}
+
+.codicon-azure:before {
+  content: "";
+}
+
+.codicon-issue-draft:before {
+  content: "";
+}
+
+.codicon-git-pull-request-closed:before {
+  content: "";
+}
+
+.codicon-git-pull-request-draft:before {
+  content: "";
+}
+
+.codicon-debug-all:before {
+  content: "";
+}
+
+.codicon-debug-coverage:before {
+  content: "";
+}
+
+.codicon-run-errors:before {
+  content: "";
+}
+
+.codicon-folder-library:before {
+  content: "";
+}
+
+.codicon-debug-continue-small:before {
+  content: "";
+}
+
+.codicon-beaker-stop:before {
+  content: "";
+}
+
+.codicon-graph-line:before {
+  content: "";
+}
+
+.codicon-graph-scatter:before {
+  content: "";
+}
+
+.codicon-pie-chart:before {
+  content: "";
+}
+
+.codicon-bracket:before {
+  content: "";
+}
+
+.codicon-bracket-dot:before {
+  content: "";
+}
+
+.codicon-bracket-error:before {
+  content: "";
+}
+
+.codicon-lock-small:before {
+  content: "";
+}
+
+.codicon-azure-devops:before {
+  content: "";
+}
+
+.codicon-verified-filled:before {
+  content: "";
+}
+
+.codicon-newline:before {
+  content: "";
+}
+
+.codicon-layout:before {
+  content: "";
+}
+
+.codicon-layout-activitybar-left:before {
+  content: "";
+}
+
+.codicon-layout-activitybar-right:before {
+  content: "";
+}
+
+.codicon-layout-panel-left:before {
+  content: "";
+}
+
+.codicon-layout-panel-center:before {
+  content: "";
+}
+
+.codicon-layout-panel-justify:before {
+  content: "";
+}
+
+.codicon-layout-panel-right:before {
+  content: "";
+}
+
+.codicon-layout-panel:before {
+  content: "";
+}
+
+.codicon-layout-sidebar-left:before {
+  content: "";
+}
+
+.codicon-layout-sidebar-right:before {
+  content: "";
+}
+
+.codicon-layout-statusbar:before {
+  content: "";
+}
+
+.codicon-layout-menubar:before {
+  content: "";
+}
+
+.codicon-layout-centered:before {
+  content: "";
+}
+
+.codicon-target:before {
+  content: "";
+}
+
+.codicon-indent:before {
+  content: "";
+}
+
+.codicon-record-small:before {
+  content: "";
+}
+
+.codicon-error-small:before {
+  content: "";
+}
+
+.codicon-arrow-circle-down:before {
+  content: "";
+}
+
+.codicon-arrow-circle-left:before {
+  content: "";
+}
+
+.codicon-arrow-circle-right:before {
+  content: "";
+}
+
+.codicon-arrow-circle-up:before {
+  content: "";
+}
+
+.codicon-layout-sidebar-right-off:before {
+  content: "";
+}
+
+.codicon-layout-panel-off:before {
+  content: "";
+}
+
+.codicon-layout-sidebar-left-off:before {
+  content: "";
+}
+
+.codicon-blank:before {
+  content: "";
+}
+
+.codicon-heart-filled:before {
+  content: "";
+}
+
+.codicon-map:before {
+  content: "";
+}
+
+.codicon-map-filled:before {
+  content: "";
+}
+
+.codicon-circle-small:before {
+  content: "";
+}
+
+.codicon-bell-slash:before {
+  content: "";
+}
+
+.codicon-bell-slash-dot:before {
+  content: "";
+}
+
+.codicon-comment-unresolved:before {
+  content: "";
+}
+
+.codicon-git-pull-request-go-to-changes:before {
+  content: "";
+}
+
+.codicon-git-pull-request-new-changes:before {
+  content: "";
+}
+
+/*# sourceMappingURL=index.css.map */

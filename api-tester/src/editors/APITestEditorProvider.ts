@@ -1,5 +1,13 @@
 import * as vscode from "vscode";
 
+const MSG_TYP_ERROR = "error";
+const MSG_TYP_DOCCHANGE = "docchange";
+const MSG_TYP_SEND = "send";
+
+const PLG_MSG_TYP_UPDATE = "update";
+const PLG_MSG_TYP_RUNNING = "running";
+const PLG_MSG_TYP_DONE = "done";
+
 export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
     const provider = new APITestEditorProvider(context);
@@ -25,8 +33,10 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
 
     function updateWebview() {
       webviewPanel.webview.postMessage({
-        type: "update",
+        type: PLG_MSG_TYP_UPDATE,
+        name: document.fileName,
         text: document.getText(),
+        workspaceFolder: vscode.workspace.getWorkspaceFolder(document.uri),
       });
     }
 
@@ -44,6 +54,30 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
 
     webviewPanel.webview.onDidReceiveMessage((e) => {
       switch (e.type) {
+        case MSG_TYP_DOCCHANGE:
+          this.updateTextDocument(document, e.document);
+          break;
+        case MSG_TYP_ERROR:
+          if (e.error?.name && e.error?.message) {
+            vscode.window.showErrorMessage(
+              `${e.error.name} : ${e.error.message}`
+            );
+          } else {
+            vscode.window.showErrorMessage("" + e.error);
+          }
+          break;
+        case MSG_TYP_SEND:
+          webviewPanel.webview.postMessage({
+            type: PLG_MSG_TYP_RUNNING,
+          });
+          setTimeout(
+            () =>
+              webviewPanel.webview.postMessage({
+                type: PLG_MSG_TYP_DONE,
+              }),
+            3000
+          );
+          break;
       }
     });
 
@@ -55,6 +89,10 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
       vscode.Uri.joinPath(this.context.extensionUri, "media", "index.js")
     );
 
+    const cssUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this.context.extensionUri, "media", "index.css")
+    );
+
     return `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -63,6 +101,7 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
       <body>
         <div id="app"></div>
         <script src="${scriptUri}"></script>
+        <link rel="stylesheet" href="${cssUri}" />
       </body>
     </html>
     `;

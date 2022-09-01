@@ -4,7 +4,7 @@
   "description": "Webview for the api-tester-plugin",
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
-    "start": "parcel watch src/index.tsx --dist-dir ../api-tester/media",
+    "start": "parcel watch src/index.tsx --dist-dir ../api-tester/media ",
     "build": "parcel build src/index.html"
   },
   "keywords": [
@@ -46,8 +46,9 @@
     "process": "^0.11.10"
   },
   "dependencies": {
+    "@vscode/codicons": "^0.0.32",
+    "@vscode/webview-ui-toolkit": "^1.0.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "@fincity/kirun-js": "^1.1.1"
+    "react-dom": "^18.2.0"
   }
 }
