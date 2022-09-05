@@ -13,7 +13,8 @@
   ],
   "author": "Kiran Kumar Grandhi",
   "activationEvents": [
-    "onCustomEditor:api-tester.apitEditor"
+    "onCustomEditor:api-tester.apitEditor",
+    "onCustomEditor:api-tester.varEditor"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -24,6 +25,15 @@
         "selector": [
           {
             "filenamePattern": "*.apit"
+          }
+        ]
+      },
+      {
+        "viewType": "api-tester.varEditor",
+        "displayName": "API Test Variables",
+        "selector": [
+          {
+            "filenamePattern": "*.var"
           }
         ]
       }

@@ -5,14 +5,10 @@ import {
 } from "@vscode/webview-ui-toolkit/react";
 import React from "react";
 import { ParamsPanel } from "./ParamsPanel";
-import { UUID } from "../util/uuid";
+import { convertToArray } from "../util/convertToArray";
 import { BodyData } from "./BodyData";
 
-function convertToArray(params) {
-  return Object.entries(params ?? {}).map(([k, v]) => [UUID(), k, v, true]);
-}
-
-export function RequestPanel({ readOnly, document, onChange }) {
+export function RequestPanel({ readOnly, document, onChange, onError }) {
   return (
     <VSCodePanels style={{ minHeight: "300px" }}>
       <VSCodePanelTab id="params">Query Params</VSCodePanelTab>
@@ -27,6 +23,7 @@ export function RequestPanel({ readOnly, document, onChange }) {
           params={document.params}
           paramsArray={document.paramsArray ?? convertToArray(document.params)}
           sectionName={"params"}
+          arraySectionName={"paramsArray"}
         />
       </VSCodePanelView>
       <VSCodePanelView id="headersPanel">
@@ -38,10 +35,16 @@ export function RequestPanel({ readOnly, document, onChange }) {
             document.headersArray ?? convertToArray(document.headers)
           }
           sectionName={"headers"}
+          arraySectionName={"headersArray"}
         />
       </VSCodePanelView>
       <VSCodePanelView id="bodyPanel">
-        <BodyData readOnly={readOnly} document={document} onChange={onChange} />
+        <BodyData
+          readOnly={readOnly}
+          document={document}
+          onChange={onChange}
+          onError={onError}
+        />
       </VSCodePanelView>
       <VSCodePanelView id="preScriptPanel"></VSCodePanelView>
       <VSCodePanelView id="postScriptPanel"></VSCodePanelView>

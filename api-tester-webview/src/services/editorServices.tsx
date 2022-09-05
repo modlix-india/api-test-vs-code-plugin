@@ -1,3 +1,5 @@
+import makeDataObject from "./setDataService";
+
 const MSG_TYP_ERROR = "error";
 const MSG_TYP_DOCCHANGE = "docchange";
 const MSG_TYP_SEND = "send";
@@ -41,10 +43,11 @@ export function onDocumentChange(
 ) {
   json = duplicate(json);
   for (const [section, value] of sectionValues) {
-    if (value === null || value === undefined) {
-      delete json[section];
+    if (section === "data") {
+      makeDataObject(json, "backup.data", value);
     }
-    json[section] = value;
+
+    makeDataObject(json, section, value);
   }
   vscode.postMessage({
     type: MSG_TYP_DOCCHANGE,
