@@ -27140,8 +27140,10 @@ function Editor() {
                 text: msg.text
             });
         } else if (msg.type === PLG_MSG_TYP_RUNNING) setReadOnly(true);
-        else if (msg.type === PLG_MSG_TYP_DONE) setReadOnly(false);
-        else if (msg.type === PLG_MSG_TYP_ENVIRONMENTS) setEnvironments(msg.environments);
+        else if (msg.type === PLG_MSG_TYP_DONE) {
+            setReadOnly(false);
+            console.log(msg.data);
+        } else if (msg.type === PLG_MSG_TYP_ENVIRONMENTS) setEnvironments(msg.environments);
         else if (msg.type === PLG_MSG_TYP_CURRENT_ENVIRONMENT) setCurrentEnvironment(msg.currentEnvironment);
     }, []);
     (0, _react.useEffect)(()=>{
@@ -27157,7 +27159,7 @@ function Editor() {
         currentEnvironment: currentEnvironment
     }, void 0, false, {
         fileName: "src/components/Editor.tsx",
-        lineNumber: 74,
+        lineNumber: 75,
         columnNumber: 13
     }, this);
     else mainEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _vareditor.VAREditor), {
@@ -27165,7 +27167,7 @@ function Editor() {
         vscode: vscode
     }, void 0, false, {
         fileName: "src/components/Editor.tsx",
-        lineNumber: 82,
+        lineNumber: 83,
         columnNumber: 23
     }, this);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -27175,19 +27177,19 @@ function Editor() {
                 fileName: name.fileName
             }, void 0, false, {
                 fileName: "src/components/Editor.tsx",
-                lineNumber: 86,
+                lineNumber: 87,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react1.VSCodeDivider), {}, void 0, false, {
                 fileName: "src/components/Editor.tsx",
-                lineNumber: 87,
+                lineNumber: 88,
                 columnNumber: 13
             }, this),
             mainEditor
         ]
     }, void 0, true, {
         fileName: "src/components/Editor.tsx",
-        lineNumber: 85,
+        lineNumber: 86,
         columnNumber: 9
     }, this);
 }
@@ -51310,7 +51312,7 @@ function APIEditor({ readOnly , currentDocument , vscode , environments , curren
                 document: currentDocument,
                 onMethodChange: (m)=>_editorServices.onHttpMethodChange(m, currentDocument, vscode),
                 onUrlChange: (u)=>_editorServices.onUrlChange(u, currentDocument, vscode),
-                onSend: ()=>_editorServices.onSend(currentDocument, vscode),
+                onSend: ()=>_editorServices.onSend(currentDocument, currentEnvironment, vscode),
                 environments: environments,
                 currentEnvironment: currentEnvironment,
                 onEnvironmentChange: (e)=>_editorServices.onChangeEnvironment(e, vscode)
@@ -52566,10 +52568,11 @@ function onError(err, vscode) {
         }
     });
 }
-function onSend(json, vscode) {
+function onSend(json, currentEnvironment, vscode) {
     vscode.postMessage({
         type: MSG_TYP_SEND,
-        json
+        document: json,
+        environment: currentEnvironment
     });
 }
 function onDocumentChange(sectionValues, json, vscode) {

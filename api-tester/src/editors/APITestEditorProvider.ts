@@ -1,6 +1,7 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 import * as fs from 'fs';
+import { runAxiosRequest } from '../util/runAxiosRequest';
 
 const MSG_TYP_ERROR = 'error';
 const MSG_TYP_DOCCHANGE = 'docchange';
@@ -136,13 +137,19 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
                     webviewPanel.webview.postMessage({
                         type: PLG_MSG_TYP_RUNNING,
                     });
-                    setTimeout(
-                        () =>
-                            webviewPanel.webview.postMessage({
-                                type: PLG_MSG_TYP_DONE,
-                            }),
-                        3000,
-                    );
+
+                    runAxiosRequest(e.document, e.environment, workspaceFolder?.uri?.fsPath, (data) => {
+                        if (data?.request) {
+                            delete data.request.res;
+                            delete data.request.socket;
+                            delete data.request._redirectable;
+                        }
+                        webviewPanel.webview.postMessage({
+                            type: PLG_MSG_TYP_DONE,
+                            data,
+                        });
+                    });
+
                     break;
                 case MSG_TYP_ENVCHANGE:
                     if (workspaceFolder) {

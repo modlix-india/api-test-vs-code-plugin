@@ -13,7 +13,7 @@ export function APIEditor({ readOnly, currentDocument, vscode, environments, cur
                 document={currentDocument}
                 onMethodChange={(m) => services.onHttpMethodChange(m, currentDocument, vscode)}
                 onUrlChange={(u) => services.onUrlChange(u, currentDocument, vscode)}
-                onSend={() => services.onSend(currentDocument, vscode)}
+                onSend={() => services.onSend(currentDocument, currentEnvironment, vscode)}
                 environments={environments}
                 currentEnvironment={currentEnvironment}
                 onEnvironmentChange={(e) => services.onChangeEnvironment(e, vscode)}

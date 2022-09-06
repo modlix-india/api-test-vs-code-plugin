@@ -56,6 +56,7 @@ export function Editor() {
             setReadOnly(true);
         } else if (msg.type === PLG_MSG_TYP_DONE) {
             setReadOnly(false);
+            console.log(msg.data);
         } else if (msg.type === PLG_MSG_TYP_ENVIRONMENTS) {
             setEnvironments(msg.environments);
         } else if (msg.type === PLG_MSG_TYP_CURRENT_ENVIRONMENT) {

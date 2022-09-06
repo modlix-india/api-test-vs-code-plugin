@@ -30,10 +30,11 @@ export function onError(err: any, vscode: any) {
     });
 }
 
-export function onSend(json: any, vscode: any) {
+export function onSend(json: any, currentEnvironment: string, vscode: any) {
     vscode.postMessage({
         type: MSG_TYP_SEND,
-        json,
+        document: json,
+        environment: currentEnvironment,
     });
 }
 
