@@ -5,7 +5,7 @@ import { RequestPanel } from './RequestPanel';
 
 import * as services from '../services/editorServices';
 
-export function APIEditor({ readOnly, currentDocument, vscode }) {
+export function APIEditor({ readOnly, currentDocument, vscode, environments, currentEnvironment }) {
     return (
         <>
             <AddressBar
@@ -14,6 +14,9 @@ export function APIEditor({ readOnly, currentDocument, vscode }) {
                 onMethodChange={(m) => services.onHttpMethodChange(m, currentDocument, vscode)}
                 onUrlChange={(u) => services.onUrlChange(u, currentDocument, vscode)}
                 onSend={() => services.onSend(currentDocument, vscode)}
+                environments={environments}
+                currentEnvironment={currentEnvironment}
+                onEnvironmentChange={(e) => services.onChangeEnvironment(e, vscode)}
             />
             <RequestPanel
                 readOnly={readOnly}

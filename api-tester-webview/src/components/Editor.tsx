@@ -4,6 +4,7 @@ import { VSCodeDivider } from '@vscode/webview-ui-toolkit/react';
 import { Title } from './Title';
 import { APIEditor } from './APIEditor';
 import { VAREditor } from './VAREditor';
+import { UUID } from '../util/uuid';
 
 // @ts-ignore
 const vscode = acquireVsCodeApi();
@@ -11,6 +12,8 @@ const vscode = acquireVsCodeApi();
 const PLG_MSG_TYP_UPDATE = 'update';
 const PLG_MSG_TYP_RUNNING = 'running';
 const PLG_MSG_TYP_DONE = 'done';
+const PLG_MSG_TYP_ENVIRONMENTS = 'environments';
+const PLG_MSG_TYP_CURRENT_ENVIRONMENT = 'currentEnvironment';
 
 export function Editor() {
     const [currentDocument, setCurrentDocument] = useState<any>({});
@@ -18,6 +21,8 @@ export function Editor() {
     const [, setWorkspaceFolder] = useState();
     const [readOnly, setReadOnly] = useState(false);
     const [fileType, setFileType] = useState('');
+    const [environments, setEnvironments] = useState([]);
+    const [currentEnvironment, setCurrentEnvironment] = useState('');
 
     const documentChangeCallback = useCallback((ev: any) => {
         const msg = ev.data;
@@ -51,6 +56,10 @@ export function Editor() {
             setReadOnly(true);
         } else if (msg.type === PLG_MSG_TYP_DONE) {
             setReadOnly(false);
+        } else if (msg.type === PLG_MSG_TYP_ENVIRONMENTS) {
+            setEnvironments(msg.environments);
+        } else if (msg.type === PLG_MSG_TYP_CURRENT_ENVIRONMENT) {
+            setCurrentEnvironment(msg.currentEnvironment);
         }
     }, []);
 
@@ -61,7 +70,15 @@ export function Editor() {
 
     let mainEditor = <></>;
     if (fileType === 'apit')
-        mainEditor = <APIEditor readOnly={readOnly} currentDocument={currentDocument} vscode={vscode} />;
+        mainEditor = (
+            <APIEditor
+                readOnly={readOnly}
+                currentDocument={currentDocument}
+                vscode={vscode}
+                environments={environments}
+                currentEnvironment={currentEnvironment}
+            />
+        );
     else mainEditor = <VAREditor currentDocument={currentDocument} vscode={vscode} />;
 
     return (

@@ -1,7 +1,7 @@
 @font-face {
   font-family: codicon;
   font-display: block;
-  src: url("codicon.33f003f6.ttf") format("truetype");
+  src: url("codicon.1dce870c.ttf") format("truetype");
 }
 
 .codicon[class*="codicon-"] {
@@ -1727,3 +1727,4 @@
   content: "";
 }
 
+/*# sourceMappingURL=index.css.map */

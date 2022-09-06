@@ -125,7 +125,7 @@ export function ParamsPanel(props) {
         [UUID(), '', '', true, EDITOR_TYPES.STRING],
     ])
         rows.push(
-            <div style={{ display: 'flex', flexDirection: 'row', border: '1px solid' }}>
+            <div key={id} style={{ display: 'flex', flexDirection: 'row', border: '1px solid' }}>
                 <div style={firstColumn}>
                     {k === '' ? (
                         <></>

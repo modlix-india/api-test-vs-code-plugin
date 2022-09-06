@@ -121,7 +121,7 @@ export function BodyData({ readOnly, document, onChange, onError }) {
                 disabled={readOnly}
             >
                 {Object.entries(rawTypes).map(([k, [, label]]) => (
-                    <VSCodeOption label={label} value={k}>
+                    <VSCodeOption key={k} label={label} value={k}>
                         {label}
                     </VSCodeOption>
                 ))}

@@ -1,22 +1,36 @@
+import * as path from 'path';
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import * as path from 'path';
 
 const MSG_TYP_ERROR = 'error';
 const MSG_TYP_DOCCHANGE = 'docchange';
 const MSG_TYP_SEND = 'send';
+const MSG_TYP_ENVCHANGE = 'envchange';
 
 const PLG_MSG_TYP_UPDATE = 'update';
 const PLG_MSG_TYP_RUNNING = 'running';
 const PLG_MSG_TYP_DONE = 'done';
+const PLG_MSG_TYP_ENVIRONMENTS = 'environments';
+const PLG_MSG_TYP_CURRENT_ENVIRONMENT = 'currentEnvironment';
 
 export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
+    private sWatcher: vscode.FileSystemWatcher | undefined;
+    private wsWatcher: vscode.FileSystemWatcher | undefined;
+
+    public static register(context: vscode.ExtensionContext): vscode.Disposable {
+        const provider = new APITestEditorProvider(context);
+        const providerRegistration = vscode.window.registerCustomEditorProvider('api-tester.apiEditor', provider, {
+            webviewOptions: { retainContextWhenHidden: true },
+        });
+        return providerRegistration;
+    }
+
     constructor(private readonly context: vscode.ExtensionContext) {}
 
     resolveCustomTextEditor(
         document: vscode.TextDocument,
         webviewPanel: vscode.WebviewPanel,
-        token: vscode.CancellationToken,
+        _token: vscode.CancellationToken,
     ): void | Thenable<void> {
         webviewPanel.webview.options = {
             enableScripts: true,
@@ -24,11 +38,66 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
 
         webviewPanel.webview.html = this.getHtmlForWebview(webviewPanel.webview);
 
-        function updateWebview() {
-            let workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+        const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
 
+        function readEnvironments(wsFolder: vscode.Uri) {
+            vscode.workspace.fs.readDirectory(wsFolder).then((files) => {
+                let envs = files
+                    .map((e) => e[0])
+                    .filter((e) => e.toUpperCase().endsWith('.VAR'))
+                    .filter((e) => e.toUpperCase() !== 'GLOBAL.VAR');
+                webviewPanel.webview.postMessage({
+                    type: PLG_MSG_TYP_ENVIRONMENTS,
+                    environments: envs,
+                });
+            });
+        }
+
+        function readSettings(settings: vscode.Uri) {
+            vscode.workspace.fs.readFile(settings).then((array) => {
+                const data = Buffer.from(array).toString();
+                try {
+                    const jsonSettings = JSON.parse(data);
+                    webviewPanel.webview.postMessage({
+                        type: PLG_MSG_TYP_CURRENT_ENVIRONMENT,
+                        currentEnvironment: jsonSettings.environment,
+                    });
+                } catch (err) {}
+            });
+        }
+
+        let _that = this;
+        function updateWebview() {
             if (workspaceFolder?.uri?.fsPath) {
-                fs.readdir(path.resolve(workspaceFolder?.uri?.fsPath), (err, files) => {});
+                readEnvironments(workspaceFolder?.uri);
+
+                const settings = vscode.Uri.file(path.resolve(workspaceFolder?.uri?.fsPath, '.settings'));
+                const hasSettings = vscode.workspace.fs.stat(settings);
+                hasSettings.then(() => {
+                    readSettings(settings);
+                    if (!_that.sWatcher) {
+                        _that.sWatcher = vscode.workspace.createFileSystemWatcher(
+                            new vscode.RelativePattern(workspaceFolder?.uri?.fsPath, '.settings'),
+                        );
+                        _that.sWatcher.onDidChange(() => readSettings(settings));
+                    }
+                });
+
+                if (!_that.wsWatcher) {
+                    _that.wsWatcher = vscode.workspace.createFileSystemWatcher(
+                        new vscode.RelativePattern(workspaceFolder.uri.fsPath, '*.var'),
+                    );
+                    _that.wsWatcher.onDidChange(() => readEnvironments(workspaceFolder.uri));
+                    _that.wsWatcher.onDidCreate(() => readEnvironments(workspaceFolder.uri));
+                    _that.wsWatcher.onDidDelete(() => readEnvironments(workspaceFolder.uri));
+                }
+
+                webviewPanel.onDidChangeViewState((e) => {
+                    if (e.webviewPanel.active) {
+                        readSettings(settings);
+                        readEnvironments(workspaceFolder.uri);
+                    }
+                });
             }
 
             webviewPanel.webview.postMessage({
@@ -47,6 +116,8 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
 
         webviewPanel.onDidDispose(() => {
             changeDocumentSubscription.dispose();
+            this.wsWatcher?.dispose();
+            this.sWatcher?.dispose();
         });
 
         webviewPanel.webview.onDidReceiveMessage((e) => {
@@ -73,6 +144,27 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
                         3000,
                     );
                     break;
+                case MSG_TYP_ENVCHANGE:
+                    if (workspaceFolder) {
+                        const settings = path.resolve(workspaceFolder.uri.fsPath, '.settings');
+                        const hasSettings = fs.existsSync(settings);
+                        if (hasSettings) {
+                            fs.readFile(settings, 'utf8', (err, data) => {
+                                try {
+                                    const obj = JSON.parse(data);
+                                    obj.environment = e.environment;
+                                    fs.writeFile(settings, JSON.stringify(obj, undefined, 2), 'utf8', (err) => {});
+                                } catch (err) {}
+                            });
+                        } else {
+                            fs.writeFile(
+                                settings,
+                                JSON.stringify({ environment: e.environment }, undefined, 2),
+                                'utf8',
+                                (err) => {},
+                            );
+                        }
+                    }
             }
         });
 
@@ -80,10 +172,11 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
     }
 
     getHtmlForWebview(webview: vscode.Webview): string {
-        const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'media', 'index.js'));
-        const cssUri = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'media', 'index.css'));
+        if (this.context) {
+            const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'media', 'index.js'));
+            const cssUri = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'media', 'index.css'));
 
-        return `<!DOCTYPE html>
+            return `<!DOCTYPE html>
     <html lang="en">
       <head>
         <meta charset="utf-8" />
@@ -95,6 +188,9 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
       </body>
     </html>
     `;
+        }
+
+        return '';
     }
 
     private updateTextDocument(document: vscode.TextDocument, json: any) {
@@ -103,18 +199,5 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
         edit.replace(document.uri, new vscode.Range(0, 0, document.lineCount, 0), JSON.stringify(json, null, 2));
 
         return vscode.workspace.applyEdit(edit);
-    }
-
-    private getDocumentAsJson(document: vscode.TextDocument): any {
-        const text = document.getText();
-        if (text.trim().length === 0) {
-            return {};
-        }
-
-        try {
-            return JSON.parse(text);
-        } catch {
-            throw new Error('Could not get document as json. Content is not valid json');
-        }
     }
 }

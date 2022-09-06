@@ -4,7 +4,7 @@
     "description": "Webview for the api-tester-plugin",
     "browserslist": "> 0.5%, last 2 versions, not dead",
     "scripts": {
-        "start": "parcel watch src/index.tsx --dist-dir ../api-tester/media --no-source-maps"
+        "start": "parcel watch src/index.tsx --dist-dir ../api-tester/media"
     },
     "keywords": [
         "api-tester",
