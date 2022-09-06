@@ -52044,6 +52044,7 @@ var _react = require("@vscode/webview-ui-toolkit/react");
 var _react1 = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react1);
 var _deepEqual = require("../util/deepEqual");
+var _s = $RefreshSig$();
 let EDITOR_TYPES;
 (function(EDITOR_TYPES) {
     EDITOR_TYPES["STRING"] = "STRING";
@@ -52051,23 +52052,37 @@ let EDITOR_TYPES;
     EDITOR_TYPES["BOOLEAN"] = "BOOLEAN";
     EDITOR_TYPES["JSON"] = "JSON";
 })(EDITOR_TYPES || (EDITOR_TYPES = {}));
+function getValueByType(vt, v) {
+    if (vt === EDITOR_TYPES.STRING) v = "" + v;
+    else if (vt === EDITOR_TYPES.NUMBER) {
+        v = parseInt(v);
+        if (isNaN(v)) v = 0;
+    } else if (vt === EDITOR_TYPES.BOOLEAN) v = v === true || ("" + v).toUpperCase() === "TRUE" || ("" + v).toUpperCase() === "YES";
+    else if (vt === EDITOR_TYPES.JSON) try {
+        if (typeof v !== "object") v = JSON.parse(v);
+    } catch (err) {}
+    return v;
+}
 function EditOnClick(props) {
-    const { readOnly , value , onChange , placeholder , valueType =EDITOR_TYPES.STRING , valueTypes =[
+    _s();
+    const { readOnly , value: inValue , onChange , placeholder , valueType =EDITOR_TYPES.STRING , valueTypes =[
         EDITOR_TYPES.STRING
     ] ,  } = props;
+    const [value, setValue] = (0, _react1.useState)(getValueByType(valueType, inValue));
+    (0, _react1.useEffect)(()=>{
+        let v = getValueByType(valueType, inValue);
+        if ((0, _deepEqual.deepEqual)(v, value)) return;
+        console.log(v, value, "Different");
+        setValue(v);
+    }, [
+        valueType,
+        inValue
+    ]);
     const onError = props.onError ? props.onError : undefined;
     function onChangeCallBack(vt, v) {
-        if (vt === EDITOR_TYPES.STRING) v = "" + v;
-        else if (vt === EDITOR_TYPES.NUMBER) {
-            v = parseInt(v);
-            if (isNaN(v)) v = 0;
-        } else if (vt === EDITOR_TYPES.BOOLEAN) v = v === true || ("" + v).toUpperCase() === "TRUE" || ("" + v).toUpperCase() === "YES";
-        else if (vt === EDITOR_TYPES.JSON) try {
-            if (typeof v !== "object") v = JSON.parse(v);
-        } catch (err) {
-            if (onError) onError(err);
-        }
+        v = getValueByType(vt, v);
         if ((0, _deepEqual.deepEqual)(v, value)) return;
+        setValue(v);
         onChange(vt, v);
     }
     let valueTypesEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {}, void 0, false);
@@ -52081,12 +52096,12 @@ function EditOnClick(props) {
                 children: e
             }, e, false, {
                 fileName: "src/components/EditOnClick.tsx",
-                lineNumber: 60,
+                lineNumber: 73,
                 columnNumber: 25
             }, this))
     }, void 0, false, {
         fileName: "src/components/EditOnClick.tsx",
-        lineNumber: 52,
+        lineNumber: 65,
         columnNumber: 13
     }, this);
     let valueEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {}, void 0, false);
@@ -52100,7 +52115,7 @@ function EditOnClick(props) {
         }
     }, void 0, false, {
         fileName: "src/components/EditOnClick.tsx",
-        lineNumber: 71,
+        lineNumber: 84,
         columnNumber: 13
     }, this);
     else if (valueType === EDITOR_TYPES.JSON) valueEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodeTextArea), {
@@ -52115,7 +52130,7 @@ function EditOnClick(props) {
         onKeyUp: (e)=>onChangeCallBack(valueType, e.target.value)
     }, void 0, false, {
         fileName: "src/components/EditOnClick.tsx",
-        lineNumber: 83,
+        lineNumber: 96,
         columnNumber: 13
     }, this);
     else valueEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodeTextField), {
@@ -52129,7 +52144,7 @@ function EditOnClick(props) {
         onKeyUp: (e)=>onChangeCallBack(valueType, e.target.value)
     }, void 0, false, {
         fileName: "src/components/EditOnClick.tsx",
-        lineNumber: 95,
+        lineNumber: 108,
         columnNumber: 13
     }, this);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -52145,10 +52160,11 @@ function EditOnClick(props) {
         ]
     }, void 0, true, {
         fileName: "src/components/EditOnClick.tsx",
-        lineNumber: 107,
+        lineNumber: 120,
         columnNumber: 9
     }, this);
 }
+_s(EditOnClick, "F/xJ1jvdE8KzmpqK7FAfY7ykFr8=");
 _c = EditOnClick;
 var _c;
 $RefreshReg$(_c, "EditOnClick");
