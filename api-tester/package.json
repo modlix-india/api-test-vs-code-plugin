@@ -1,8 +1,9 @@
 {
-    "name": "api-tester",
-    "displayName": "API Tester",
-    "description": "To test Rest and Graph API based on definition",
+    "name": "rest-api-tester",
+    "displayName": "REST API Tester",
+    "description": "To test Rest based on definition",
     "version": "1.0.0",
+    "icon": "logo.png",
     "engines": {
         "vscode": "^1.70.0"
     },
@@ -17,6 +18,7 @@
         "onCustomEditor:api-tester.varEditor",
         "onCustomEditor:api-tester.apiEditor"
     ],
+    "publisher": "fincity",
     "main": "./dist/extension.js",
     "contributes": {
         "customEditors": [

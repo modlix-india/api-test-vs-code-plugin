@@ -6,3 +6,4 @@ coverage/
 dist
 .parcel-cache
 media
+*.vsix
