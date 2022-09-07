@@ -17,6 +17,7 @@ export function onHttpMethodChange(newMethod: string, json: any, vscode: any) {
 export function onUrlChange(newUrl: string, json: any, vscode: any) {
     json = duplicate(json);
     json.url = newUrl;
+    console.log(newUrl);
     vscode.postMessage({
         type: MSG_TYP_DOCCHANGE,
         document: json,

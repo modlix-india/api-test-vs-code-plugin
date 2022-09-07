@@ -93,7 +93,6 @@ export function ResponsePanel({ readOnly, responseData }) {
         );
     }
 
-    console.log(responseData);
     let message = <></>;
     if (responseData.message) {
         message = (
@@ -104,14 +103,23 @@ export function ResponsePanel({ readOnly, responseData }) {
         );
     }
 
-    return (
-        <>
-            <div style={{ paddingBottom: '4px', fontSize: '11px', textAlign: 'right', paddingRight: '25px' }}>
+    let statusCode = <></>;
+    if (responseData.status) {
+        statusCode = (
+            <>
                 <span style={{ color: 'var(--panel-tab-foreground)' }}>Status Code : </span>
                 <span style={{ fontWeight: 'bold' }}>{responseData.status}</span>
                 <span style={{ fontWeight: 'bold', color: 'var(--button-primary-background)', marginLeft: '4px' }}>
                     {RESPONSE_CODES[responseData.status]}
                 </span>
+            </>
+        );
+    }
+
+    return (
+        <>
+            <div style={{ paddingBottom: '4px', fontSize: '11px', textAlign: 'right', paddingRight: '25px' }}>
+                {statusCode}
                 {message}
             </div>
 

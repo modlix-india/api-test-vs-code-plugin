@@ -44,7 +44,11 @@ export function AddressBar({
             <VSCodeTextField
                 id="address"
                 value={document.url ?? ''}
-                onChange={(e) => onUrlChange(e.target.value)}
+                onKeyUp={(e) => {
+                    let v = (e.target as HTMLInputElement).value;
+                    if (v === document.url) return;
+                    onUrlChange(v);
+                }}
                 style={{ flex: '1' }}
                 disabled={readOnly}
             ></VSCodeTextField>
