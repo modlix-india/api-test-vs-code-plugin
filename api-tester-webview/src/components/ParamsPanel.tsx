@@ -7,7 +7,7 @@ import { EditOnClick, EDITOR_TYPES } from './EditOnClick';
 
 const firstColumn = {
     width: '55px',
-    borderRight: '1px solid',
+    borderRight: '1px solid var(--divider-background)',
     minHeight: '26px',
     display: 'flex',
     alignItems: 'flex-start',
@@ -17,7 +17,7 @@ const firstColumn = {
 
 const secondColumn = {
     flex: '1',
-    borderRight: '1px solid',
+    borderRight: '1px solid var(--divider-background)',
     minHeight: '26px',
     display: 'flex',
     alignItems: 'flex-start',
@@ -120,14 +120,16 @@ export function ParamsPanel(props) {
 
     const rows: any[] = [];
 
-    for (const [id, k, v, include, valueType = EDITOR_TYPES.STRING] of [
-        ...(paramsArray ?? []),
-        [UUID(), '', '', true, EDITOR_TYPES.STRING],
-    ])
+    for (const [id, k, v, include, valueType = EDITOR_TYPES.STRING] of readOnly
+        ? paramsArray ?? []
+        : [...(paramsArray ?? []), [UUID(), '', '', true, EDITOR_TYPES.STRING]])
         rows.push(
-            <div key={id} style={{ display: 'flex', flexDirection: 'row', border: '1px solid' }}>
+            <div
+                key={id}
+                style={{ display: 'flex', flexDirection: 'row', border: '1px solid  var(--divider-background)' }}
+            >
                 <div style={firstColumn}>
-                    {k === '' ? (
+                    {k === '' || readOnly ? (
                         <></>
                     ) : (
                         <>
@@ -183,9 +185,9 @@ export function ParamsPanel(props) {
                 flex: '1',
             }}
         >
-            <div style={{ display: 'flex', flexDirection: 'row', border: '1px solid' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', border: '1px solid  var(--divider-background)' }}>
                 <div style={firstColumn}></div>
-                <div style={{ ...secondColumn, fontWeight: 'bold' }}>
+                <div style={{ ...secondColumn, fontWeight: 'bold', alignItems: 'center' }}>
                     <span>KEY</span>
                 </div>
                 <div style={{ ...thirdColumn, fontWeight: 'bold' }}>

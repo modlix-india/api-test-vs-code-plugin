@@ -23,6 +23,7 @@ export function Editor() {
     const [fileType, setFileType] = useState('');
     const [environments, setEnvironments] = useState([]);
     const [currentEnvironment, setCurrentEnvironment] = useState('');
+    const [responseData, setResponseData] = useState<any>(undefined);
 
     const documentChangeCallback = useCallback((ev: any) => {
         const msg = ev.data;
@@ -56,7 +57,7 @@ export function Editor() {
             setReadOnly(true);
         } else if (msg.type === PLG_MSG_TYP_DONE) {
             setReadOnly(false);
-            console.log(msg.data);
+            setResponseData(msg.data);
         } else if (msg.type === PLG_MSG_TYP_ENVIRONMENTS) {
             setEnvironments(msg.environments);
         } else if (msg.type === PLG_MSG_TYP_CURRENT_ENVIRONMENT) {
@@ -78,12 +79,13 @@ export function Editor() {
                 vscode={vscode}
                 environments={environments}
                 currentEnvironment={currentEnvironment}
+                responseData={responseData}
             />
         );
     else mainEditor = <VAREditor currentDocument={currentDocument} vscode={vscode} />;
 
     return (
-        <div>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <Title folderName={name.folderName} fileName={name.fileName} />
             <VSCodeDivider />
             {mainEditor}

@@ -4,8 +4,9 @@ import { AddressBar } from './AddressBar';
 import { RequestPanel } from './RequestPanel';
 
 import * as services from '../services/editorServices';
+import { ResponsePanel } from './ResponsePanel';
 
-export function APIEditor({ readOnly, currentDocument, vscode, environments, currentEnvironment }) {
+export function APIEditor({ readOnly, currentDocument, vscode, environments, currentEnvironment, responseData }) {
     return (
         <>
             <AddressBar
@@ -25,6 +26,7 @@ export function APIEditor({ readOnly, currentDocument, vscode, environments, cur
                 onError={(err) => services.onError(err, vscode)}
             />
             <VSCodeDivider />
+            <ResponsePanel readOnly={readOnly} responseData={responseData} />
         </>
     );
 }

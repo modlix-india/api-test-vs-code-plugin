@@ -27110,6 +27110,7 @@ function Editor() {
     const [fileType, setFileType] = (0, _react.useState)("");
     const [environments, setEnvironments] = (0, _react.useState)([]);
     const [currentEnvironment, setCurrentEnvironment] = (0, _react.useState)("");
+    const [responseData, setResponseData] = (0, _react.useState)(undefined);
     const documentChangeCallback = (0, _react.useCallback)((ev)=>{
         const msg = ev.data;
         if (msg.type === PLG_MSG_TYP_UPDATE) {
@@ -27142,7 +27143,7 @@ function Editor() {
         } else if (msg.type === PLG_MSG_TYP_RUNNING) setReadOnly(true);
         else if (msg.type === PLG_MSG_TYP_DONE) {
             setReadOnly(false);
-            console.log(msg.data);
+            setResponseData(msg.data);
         } else if (msg.type === PLG_MSG_TYP_ENVIRONMENTS) setEnvironments(msg.environments);
         else if (msg.type === PLG_MSG_TYP_CURRENT_ENVIRONMENT) setCurrentEnvironment(msg.currentEnvironment);
     }, []);
@@ -27156,10 +27157,11 @@ function Editor() {
         currentDocument: currentDocument,
         vscode: vscode,
         environments: environments,
-        currentEnvironment: currentEnvironment
+        currentEnvironment: currentEnvironment,
+        responseData: responseData
     }, void 0, false, {
         fileName: "src/components/Editor.tsx",
-        lineNumber: 75,
+        lineNumber: 76,
         columnNumber: 13
     }, this);
     else mainEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _vareditor.VAREditor), {
@@ -27167,33 +27169,38 @@ function Editor() {
         vscode: vscode
     }, void 0, false, {
         fileName: "src/components/Editor.tsx",
-        lineNumber: 83,
+        lineNumber: 85,
         columnNumber: 23
     }, this);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        style: {
+            flex: 1,
+            display: "flex",
+            flexDirection: "column"
+        },
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _title.Title), {
                 folderName: name.folderName,
                 fileName: name.fileName
             }, void 0, false, {
                 fileName: "src/components/Editor.tsx",
-                lineNumber: 87,
+                lineNumber: 89,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react1.VSCodeDivider), {}, void 0, false, {
                 fileName: "src/components/Editor.tsx",
-                lineNumber: 88,
+                lineNumber: 90,
                 columnNumber: 13
             }, this),
             mainEditor
         ]
     }, void 0, true, {
         fileName: "src/components/Editor.tsx",
-        lineNumber: 86,
+        lineNumber: 88,
         columnNumber: 9
     }, this);
 }
-_s(Editor, "A8d0wDZfHm4ZKDiUuyHL2hSwMt4=");
+_s(Editor, "tqIg8Yot7r3uKKiX0XqfbzK59fU=");
 _c = Editor;
 var _c;
 $RefreshReg$(_c, "Editor");
@@ -51141,21 +51148,33 @@ var _reactDefault = parcelHelpers.interopDefault(_react);
 function Title({ folderName , fileName  }) {
     if (folderName) return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h4", {
         children: [
-            folderName,
-            " / ",
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                style: {
+                    color: "var(--panel-tab-foreground)",
+                    fontWeight: "300"
+                },
+                children: [
+                    folderName,
+                    " / "
+                ]
+            }, void 0, true, {
+                fileName: "src/components/Title.tsx",
+                lineNumber: 7,
+                columnNumber: 17
+            }, this),
             fileName
         ]
     }, void 0, true, {
         fileName: "src/components/Title.tsx",
         lineNumber: 6,
-        columnNumber: 7
+        columnNumber: 13
     }, this);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h4", {
         children: fileName
     }, void 0, false, {
         fileName: "src/components/Title.tsx",
-        lineNumber: 11,
-        columnNumber: 10
+        lineNumber: 12,
+        columnNumber: 12
     }, this);
 }
 _c = Title;
@@ -51304,7 +51323,8 @@ var _reactDefault = parcelHelpers.interopDefault(_react1);
 var _addressBar = require("./AddressBar");
 var _requestPanel = require("./RequestPanel");
 var _editorServices = require("../services/editorServices");
-function APIEditor({ readOnly , currentDocument , vscode , environments , currentEnvironment  }) {
+var _responsePanel = require("./ResponsePanel");
+function APIEditor({ readOnly , currentDocument , vscode , environments , currentEnvironment , responseData  }) {
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _addressBar.AddressBar), {
@@ -51318,7 +51338,7 @@ function APIEditor({ readOnly , currentDocument , vscode , environments , curren
                 onEnvironmentChange: (e)=>_editorServices.onChangeEnvironment(e, vscode)
             }, void 0, false, {
                 fileName: "src/components/APIEditor.tsx",
-                lineNumber: 11,
+                lineNumber: 12,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _requestPanel.RequestPanel), {
@@ -51328,12 +51348,20 @@ function APIEditor({ readOnly , currentDocument , vscode , environments , curren
                 onError: (err)=>_editorServices.onError(err, vscode)
             }, void 0, false, {
                 fileName: "src/components/APIEditor.tsx",
-                lineNumber: 21,
+                lineNumber: 22,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodeDivider), {}, void 0, false, {
                 fileName: "src/components/APIEditor.tsx",
-                lineNumber: 27,
+                lineNumber: 28,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _responsePanel.ResponsePanel), {
+                readOnly: readOnly,
+                responseData: responseData
+            }, void 0, false, {
+                fileName: "src/components/APIEditor.tsx",
+                lineNumber: 29,
                 columnNumber: 13
             }, this)
         ]
@@ -51348,7 +51376,7 @@ $RefreshReg$(_c, "APIEditor");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"eGH5i","@vscode/webview-ui-toolkit/react":"lkQje","react":"9sfFD","./AddressBar":"5V82i","./RequestPanel":"ikWHw","../services/editorServices":"5FQah","@parcel/transformer-js/src/esmodule-helpers.js":"5oERU","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"ftrPk"}],"5V82i":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"eGH5i","@vscode/webview-ui-toolkit/react":"lkQje","react":"9sfFD","./AddressBar":"5V82i","./RequestPanel":"ikWHw","../services/editorServices":"5FQah","@parcel/transformer-js/src/esmodule-helpers.js":"5oERU","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"ftrPk","./ResponsePanel":"dLcQt"}],"5V82i":[function(require,module,exports) {
 var $parcel$ReactRefreshHelpers$eec4 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;
@@ -51535,7 +51563,7 @@ function RequestPanel({ readOnly , document , onChange , onError  }) {
     var _paramsArray, _headersArray;
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodePanels), {
         style: {
-            minHeight: "300px"
+            flex: 1
         },
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodePanelTab), {
@@ -51543,40 +51571,40 @@ function RequestPanel({ readOnly , document , onChange , onError  }) {
                 children: "Query Params"
             }, void 0, false, {
                 fileName: "src/components/RequestPanel.tsx",
-                lineNumber: 14,
-                columnNumber: 7
+                lineNumber: 10,
+                columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodePanelTab), {
                 id: "headers",
                 children: "Headers"
             }, void 0, false, {
                 fileName: "src/components/RequestPanel.tsx",
-                lineNumber: 15,
-                columnNumber: 7
+                lineNumber: 11,
+                columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodePanelTab), {
                 id: "body",
                 children: "Body"
             }, void 0, false, {
                 fileName: "src/components/RequestPanel.tsx",
-                lineNumber: 16,
-                columnNumber: 7
+                lineNumber: 12,
+                columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodePanelTab), {
                 id: "preScript",
                 children: "Pre Script"
             }, void 0, false, {
                 fileName: "src/components/RequestPanel.tsx",
-                lineNumber: 17,
-                columnNumber: 7
+                lineNumber: 13,
+                columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodePanelTab), {
                 id: "postScript",
                 children: "Post Script"
             }, void 0, false, {
                 fileName: "src/components/RequestPanel.tsx",
-                lineNumber: 18,
-                columnNumber: 7
+                lineNumber: 14,
+                columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodePanelView), {
                 id: "paramsPanel",
@@ -51589,13 +51617,13 @@ function RequestPanel({ readOnly , document , onChange , onError  }) {
                     arraySectionName: "paramsArray"
                 }, void 0, false, {
                     fileName: "src/components/RequestPanel.tsx",
-                    lineNumber: 20,
-                    columnNumber: 9
+                    lineNumber: 16,
+                    columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "src/components/RequestPanel.tsx",
-                lineNumber: 19,
-                columnNumber: 7
+                lineNumber: 15,
+                columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodePanelView), {
                 id: "headersPanel",
@@ -51608,13 +51636,13 @@ function RequestPanel({ readOnly , document , onChange , onError  }) {
                     arraySectionName: "headersArray"
                 }, void 0, false, {
                     fileName: "src/components/RequestPanel.tsx",
-                    lineNumber: 30,
-                    columnNumber: 9
+                    lineNumber: 26,
+                    columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "src/components/RequestPanel.tsx",
-                lineNumber: 29,
-                columnNumber: 7
+                lineNumber: 25,
+                columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodePanelView), {
                 id: "bodyPanel",
@@ -51625,33 +51653,35 @@ function RequestPanel({ readOnly , document , onChange , onError  }) {
                     onError: onError
                 }, void 0, false, {
                     fileName: "src/components/RequestPanel.tsx",
-                    lineNumber: 42,
-                    columnNumber: 9
+                    lineNumber: 36,
+                    columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "src/components/RequestPanel.tsx",
-                lineNumber: 41,
-                columnNumber: 7
+                lineNumber: 35,
+                columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodePanelView), {
-                id: "preScriptPanel"
+                id: "preScriptPanel",
+                children: "Coming Soon..."
             }, void 0, false, {
                 fileName: "src/components/RequestPanel.tsx",
-                lineNumber: 49,
-                columnNumber: 7
+                lineNumber: 38,
+                columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodePanelView), {
-                id: "postScriptPanel"
+                id: "postScriptPanel",
+                children: "Coming Soon..."
             }, void 0, false, {
                 fileName: "src/components/RequestPanel.tsx",
-                lineNumber: 50,
-                columnNumber: 7
+                lineNumber: 39,
+                columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/components/RequestPanel.tsx",
-        lineNumber: 13,
-        columnNumber: 5
+        lineNumber: 9,
+        columnNumber: 9
     }, this);
 }
 _c = RequestPanel;
@@ -51682,7 +51712,7 @@ var _uuid = require("../util/uuid");
 var _editOnClick = require("./EditOnClick");
 const firstColumn = {
     width: "55px",
-    borderRight: "1px solid",
+    borderRight: "1px solid var(--divider-background)",
     minHeight: "26px",
     display: "flex",
     alignItems: "flex-start",
@@ -51691,7 +51721,7 @@ const firstColumn = {
 };
 const secondColumn = {
     flex: "1",
-    borderRight: "1px solid",
+    borderRight: "1px solid var(--divider-background)",
     minHeight: "26px",
     display: "flex",
     alignItems: "flex-start",
@@ -51838,7 +51868,7 @@ function ParamsPanel(props) {
     }
     const onError = props.onError ? props.onError : undefined;
     const rows = [];
-    for (const [id, k, v, include, valueType = (0, _editOnClick.EDITOR_TYPES).STRING] of [
+    for (const [id, k, v, include, valueType = (0, _editOnClick.EDITOR_TYPES).STRING] of readOnly ? paramsArray !== null && paramsArray !== void 0 ? paramsArray : [] : [
         ...paramsArray !== null && paramsArray !== void 0 ? paramsArray : [],
         [
             (0, _uuid.UUID)(),
@@ -51846,17 +51876,17 @@ function ParamsPanel(props) {
             "",
             true,
             (0, _editOnClick.EDITOR_TYPES).STRING
-        ], 
+        ]
     ])rows.push(/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         style: {
             display: "flex",
             flexDirection: "row",
-            border: "1px solid"
+            border: "1px solid  var(--divider-background)"
         },
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
                 style: firstColumn,
-                children: k === "" ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {}, void 0, false) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
+                children: k === "" || readOnly ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {}, void 0, false) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
                     children: [
                         /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodeButton), {
                             onClick: ()=>deleteCallBack(k, id),
@@ -51865,12 +51895,12 @@ function ParamsPanel(props) {
                                 className: "codicon codicon-trash"
                             }, void 0, false, {
                                 fileName: "src/components/ParamsPanel.tsx",
-                                lineNumber: 139,
+                                lineNumber: 141,
                                 columnNumber: 33
                             }, this)
                         }, `${id}DeleteButton`, false, {
                             fileName: "src/components/ParamsPanel.tsx",
-                            lineNumber: 134,
+                            lineNumber: 136,
                             columnNumber: 29
                         }, this),
                         /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodeCheckbox), {
@@ -51878,14 +51908,14 @@ function ParamsPanel(props) {
                             onChange: (e)=>includeCallBack(e, k, id, v, valueType)
                         }, `${id}CheckBox`, false, {
                             fileName: "src/components/ParamsPanel.tsx",
-                            lineNumber: 141,
+                            lineNumber: 143,
                             columnNumber: 29
                         }, this)
                     ]
                 }, void 0, true)
             }, void 0, false, {
                 fileName: "src/components/ParamsPanel.tsx",
-                lineNumber: 129,
+                lineNumber: 131,
                 columnNumber: 17
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -51904,12 +51934,12 @@ function ParamsPanel(props) {
                     }
                 }, `${id}Key`, false, {
                     fileName: "src/components/ParamsPanel.tsx",
-                    lineNumber: 150,
+                    lineNumber: 152,
                     columnNumber: 21
                 }, this)
             }, void 0, false, {
                 fileName: "src/components/ParamsPanel.tsx",
-                lineNumber: 149,
+                lineNumber: 151,
                 columnNumber: 17
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -51923,18 +51953,18 @@ function ParamsPanel(props) {
                     valueType: valueType
                 }, `${id}Value`, false, {
                     fileName: "src/components/ParamsPanel.tsx",
-                    lineNumber: 164,
+                    lineNumber: 166,
                     columnNumber: 21
                 }, this)
             }, void 0, false, {
                 fileName: "src/components/ParamsPanel.tsx",
-                lineNumber: 163,
+                lineNumber: 165,
                 columnNumber: 17
             }, this)
         ]
     }, id, true, {
         fileName: "src/components/ParamsPanel.tsx",
-        lineNumber: 128,
+        lineNumber: 127,
         columnNumber: 13
     }, this));
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -51949,31 +51979,32 @@ function ParamsPanel(props) {
                 style: {
                     display: "flex",
                     flexDirection: "row",
-                    border: "1px solid"
+                    border: "1px solid  var(--divider-background)"
                 },
                 children: [
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
                         style: firstColumn
                     }, void 0, false, {
                         fileName: "src/components/ParamsPanel.tsx",
-                        lineNumber: 187,
+                        lineNumber: 189,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
                         style: {
                             ...secondColumn,
-                            fontWeight: "bold"
+                            fontWeight: "bold",
+                            alignItems: "center"
                         },
                         children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
                             children: "KEY"
                         }, void 0, false, {
                             fileName: "src/components/ParamsPanel.tsx",
-                            lineNumber: 189,
+                            lineNumber: 191,
                             columnNumber: 21
                         }, this)
                     }, void 0, false, {
                         fileName: "src/components/ParamsPanel.tsx",
-                        lineNumber: 188,
+                        lineNumber: 190,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -51985,25 +52016,25 @@ function ParamsPanel(props) {
                             children: "VALUE"
                         }, void 0, false, {
                             fileName: "src/components/ParamsPanel.tsx",
-                            lineNumber: 192,
+                            lineNumber: 194,
                             columnNumber: 21
                         }, this)
                     }, void 0, false, {
                         fileName: "src/components/ParamsPanel.tsx",
-                        lineNumber: 191,
+                        lineNumber: 193,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "src/components/ParamsPanel.tsx",
-                lineNumber: 186,
+                lineNumber: 188,
                 columnNumber: 13
             }, this),
             rows
         ]
     }, void 0, true, {
         fileName: "src/components/ParamsPanel.tsx",
-        lineNumber: 178,
+        lineNumber: 180,
         columnNumber: 9
     }, this);
 }
@@ -52135,6 +52166,13 @@ function EditOnClick(props) {
         lineNumber: 96,
         columnNumber: 13
     }, this);
+    else if (readOnly) valueEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+        children: value !== null && value !== void 0 ? value : placeholder
+    }, void 0, false, {
+        fileName: "src/components/EditOnClick.tsx",
+        lineNumber: 107,
+        columnNumber: 23
+    }, this);
     else valueEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodeTextField), {
         readOnly: readOnly,
         autofocus: true,
@@ -52146,7 +52184,7 @@ function EditOnClick(props) {
         onKeyUp: (e)=>onChangeCallBack(valueType, e.target.value)
     }, void 0, false, {
         fileName: "src/components/EditOnClick.tsx",
-        lineNumber: 108,
+        lineNumber: 110,
         columnNumber: 13
     }, this);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -52162,7 +52200,7 @@ function EditOnClick(props) {
         ]
     }, void 0, true, {
         fileName: "src/components/EditOnClick.tsx",
-        lineNumber: 120,
+        lineNumber: 122,
         columnNumber: 9
     }, this);
 }
@@ -52232,6 +52270,7 @@ var _react = require("@vscode/webview-ui-toolkit/react");
 var _react1 = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react1);
 var _convertToArray = require("../util/convertToArray");
+var _uuid = require("../util/uuid");
 var _paramsPanel = require("./ParamsPanel");
 var _s = $RefreshSig$();
 const rawTypes = {
@@ -52291,7 +52330,7 @@ function BodyData({ readOnly , document , onChange , onError  }) {
         children: " No Body for this request "
     }, void 0, false, {
         fileName: "src/components/BodyData.tsx",
-        lineNumber: 54,
+        lineNumber: 55,
         columnNumber: 22
     }, this);
     else if (bodyType === "form-data" || bodyType === "x-www-form-urlencoded") bodyEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _paramsPanel.ParamsPanel), {
@@ -52303,7 +52342,7 @@ function BodyData({ readOnly , document , onChange , onError  }) {
         arraySectionName: "backup.dataArray"
     }, void 0, false, {
         fileName: "src/components/BodyData.tsx",
-        lineNumber: 57,
+        lineNumber: 58,
         columnNumber: 13
     }, this);
     else if (bodyType === "raw") {
@@ -52338,7 +52377,7 @@ function BodyData({ readOnly , document , onChange , onError  }) {
             onBlur: textAreaChanged
         }, void 0, false, {
             fileName: "src/components/BodyData.tsx",
-            lineNumber: 85,
+            lineNumber: 86,
             columnNumber: 13
         }, this);
         subTypeEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodeDropdown), {
@@ -52353,6 +52392,20 @@ function BodyData({ readOnly , document , onChange , onError  }) {
                     data = {};
                 }
                 else if (typeof data === "object") data = JSON.stringify(data, undefined, 2);
+                var _headersArray;
+                const ha = [
+                    ...(_headersArray = document.headersArray) !== null && _headersArray !== void 0 ? _headersArray : []
+                ];
+                const ind = ha.findIndex(([, k])=>k === "Content-Type");
+                const newRec = [
+                    (0, _uuid.UUID)(),
+                    "Content-Type",
+                    rawTypes[e.target.value][0],
+                    true,
+                    "STRING"
+                ];
+                if (ind !== -1) ha.splice(ind, 1, newRec);
+                else ha.push(newRec);
                 onChange([
                     [
                         "backup.bodySubType",
@@ -52365,6 +52418,10 @@ function BodyData({ readOnly , document , onChange , onError  }) {
                     [
                         "headers.Content-Type",
                         rawTypes[e.target.value][0]
+                    ],
+                    [
+                        "headersArray",
+                        ha
                     ],
                     [
                         "data",
@@ -52383,12 +52440,12 @@ function BodyData({ readOnly , document , onChange , onError  }) {
                     children: label
                 }, k, false, {
                     fileName: "src/components/BodyData.tsx",
-                    lineNumber: 124,
+                    lineNumber: 131,
                     columnNumber: 21
                 }, this))
         }, void 0, false, {
             fileName: "src/components/BodyData.tsx",
-            lineNumber: 98,
+            lineNumber: 99,
             columnNumber: 13
         }, this);
     }
@@ -52420,32 +52477,37 @@ function BodyData({ readOnly , document , onChange , onError  }) {
                             children: e
                         }, e, false, {
                             fileName: "src/components/BodyData.tsx",
-                            lineNumber: 136,
+                            lineNumber: 143,
                             columnNumber: 21
                         }, this)),
                     subTypeEditor
                 ]
             }, void 0, true, {
                 fileName: "src/components/BodyData.tsx",
-                lineNumber: 134,
+                lineNumber: 141,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodeDivider), {}, void 0, false, {
                 fileName: "src/components/BodyData.tsx",
-                lineNumber: 149,
+                lineNumber: 156,
                 columnNumber: 13
             }, this),
             bodyEditor
         ]
     }, void 0, true, {
         fileName: "src/components/BodyData.tsx",
-        lineNumber: 133,
+        lineNumber: 140,
         columnNumber: 9
     }, this);
 }
 _s(BodyData, "oPOLgX5AE7gZKWlR3EDNYiTnu0E=");
 _c = BodyData;
 function toBodyType(document, bodySubType, toBodyType, onError) {
+    var _headersArray;
+    const ha = [
+        ...(_headersArray = document.headersArray) !== null && _headersArray !== void 0 ? _headersArray : []
+    ];
+    const ind = ha.findIndex(([, k])=>k === "Content-Type");
     if (toBodyType === "none") return [
         [
             "data",
@@ -52467,6 +52529,16 @@ function toBodyType(document, bodySubType, toBodyType, onError) {
             a[k] = v;
             return a;
         }, {});
+        const nbtype = toBodyType === "form-data" ? "multipart/form-data" : "application/x-www-form-urlencoded";
+        const newRec = [
+            (0, _uuid.UUID)(),
+            "Content-Type",
+            nbtype,
+            true,
+            "STRING"
+        ];
+        if (ind !== -1) ha.splice(ind, 1, newRec);
+        else ha.push(newRec);
         return [
             [
                 "data",
@@ -52486,7 +52558,11 @@ function toBodyType(document, bodySubType, toBodyType, onError) {
             ],
             [
                 "headers.Content-Type",
-                toBodyType === "form-data" ? "multipart/form-data" : "application/x-www-form-urlencoded", 
+                nbtype
+            ],
+            [
+                "headersArray",
+                ha
             ], 
         ];
     }
@@ -52499,6 +52575,15 @@ function toBodyType(document, bodySubType, toBodyType, onError) {
             onError(err);
             data1 = {};
         }
+        const newRec1 = [
+            (0, _uuid.UUID)(),
+            "Content-Type",
+            rawTypes[bodySubType][0],
+            true,
+            "STRING"
+        ];
+        if (ind !== -1) ha.splice(ind, 1, newRec1);
+        else ha.push(newRec1);
         return [
             [
                 "headers.Content-Type",
@@ -52515,6 +52600,10 @@ function toBodyType(document, bodySubType, toBodyType, onError) {
             [
                 "data",
                 data1
+            ],
+            [
+                "headersArray",
+                ha
             ], 
         ];
     }
@@ -52527,7 +52616,7 @@ $RefreshReg$(_c, "BodyData");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"eGH5i","@vscode/webview-ui-toolkit/react":"lkQje","react":"9sfFD","../util/convertToArray":"iLN85","./ParamsPanel":"dvu2Y","@parcel/transformer-js/src/esmodule-helpers.js":"5oERU","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"ftrPk"}],"5FQah":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"eGH5i","@vscode/webview-ui-toolkit/react":"lkQje","react":"9sfFD","../util/convertToArray":"iLN85","./ParamsPanel":"dvu2Y","@parcel/transformer-js/src/esmodule-helpers.js":"5oERU","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"ftrPk","../util/uuid":"iYafd"}],"5FQah":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "onHttpMethodChange", ()=>onHttpMethodChange);
@@ -52652,7 +52741,335 @@ function makeDataObject(src, originalPath, value) {
 }
 exports.default = makeDataObject;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"5oERU"}],"7vqLy":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"5oERU"}],"dLcQt":[function(require,module,exports) {
+var $parcel$ReactRefreshHelpers$dd22 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$dd22.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "ResponsePanel", ()=>ResponsePanel);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("@vscode/webview-ui-toolkit/react");
+var _react1 = require("react");
+var _reactDefault = parcelHelpers.interopDefault(_react1);
+var _paramsPanel = require("./ParamsPanel");
+var _s = $RefreshSig$();
+const RESPONSE_CODES = {
+    "100": "Continue",
+    "101": "Switching Protocols",
+    "200": "OK",
+    "201": "Created",
+    "202": "Accepted",
+    "203": "Non-Authoritative Information",
+    "204": "No Content",
+    "205": "Reset Content",
+    "206": "Partial Content",
+    "300": "Multiple Choices",
+    "301": "Moved Permanently",
+    "302": "Found",
+    "303": "See Other",
+    "304": "Not Modified",
+    "305": "Use Proxy",
+    "307": "Temporary Redirect",
+    "400": "Bad Request",
+    "401": "Unauthorized",
+    "402": "Payment Required",
+    "403": "Forbidden",
+    "404": "Not Found",
+    "405": "Method Not Allowed",
+    "406": "Not Acceptable",
+    "407": "Proxy Authentication Required",
+    "408": "Request Timeout",
+    "409": "Conflict",
+    "410": "Gone",
+    "411": "Length Required",
+    "412": "Precondition Failed",
+    "413": "Payload Too Large",
+    "414": "URI Too Long",
+    "415": "Unsupported Media Type",
+    "416": "Range Not Satisfiable",
+    "417": "Expectation Failed",
+    "426": "Upgrade Required",
+    "500": "Internal Server Error",
+    "501": "Not Implemented",
+    "502": "Bad Gateway",
+    "503": "Service Unavailable",
+    "504": "Gateway Timeout",
+    "505": "HTTP Version Not Supported"
+};
+function ResponsePanel({ readOnly , responseData  }) {
+    _s();
+    const [reqHeaders, setReqHeaders] = (0, _react1.useState)();
+    const [respHeaders, setRespHeaders] = (0, _react1.useState)();
+    (0, _react1.useEffect)(()=>{
+        var ref;
+        var ref1;
+        setReqHeaders(Object.entries((ref1 = responseData === null || responseData === void 0 ? void 0 : (ref = responseData.config) === null || ref === void 0 ? void 0 : ref.headers) !== null && ref1 !== void 0 ? ref1 : {}).map((e)=>[
+                e[0],
+                ...e
+            ]));
+        var ref2;
+        setRespHeaders(Object.entries((ref2 = responseData === null || responseData === void 0 ? void 0 : responseData.headers) !== null && ref2 !== void 0 ? ref2 : {}).map((e)=>[
+                e[0],
+                ...e
+            ]));
+    }, [
+        responseData
+    ]);
+    if (readOnly || !responseData) {
+        let inner = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+            style: {
+                fontSize: "50px",
+                animation: "rotating 3s linear infinite",
+                color: "#2977D1"
+            },
+            className: "codicon codicon-issue-reopened"
+        }, void 0, false, {
+            fileName: "src/components/ResponsePanel.tsx",
+            lineNumber: 60,
+            columnNumber: 13
+        }, this);
+        if (!responseData) inner = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+            style: {
+                fontSize: "100px",
+                color: "#2977D1"
+            },
+            className: "codicon codicon-symbol-interface"
+        }, void 0, false, {
+            fileName: "src/components/ResponsePanel.tsx",
+            lineNumber: 71,
+            columnNumber: 17
+        }, this);
+        return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+            style: {
+                minHeight: "200px",
+                display: "flex",
+                flex: "1.5",
+                alignItems: "center",
+                justifyContent: "center",
+                overflow: "auto"
+            },
+            children: inner
+        }, void 0, false, {
+            fileName: "src/components/ResponsePanel.tsx",
+            lineNumber: 81,
+            columnNumber: 13
+        }, this);
+    }
+    console.log(responseData);
+    let message = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {}, void 0, false);
+    if (responseData.message) message = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                style: {
+                    color: "var(--panel-tab-foreground)",
+                    marginLeft: "10px"
+                },
+                children: "Message : "
+            }, void 0, false, {
+                fileName: "src/components/ResponsePanel.tsx",
+                lineNumber: 101,
+                columnNumber: 17
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                style: {
+                    fontWeight: "bold"
+                },
+                children: responseData.message
+            }, void 0, false, {
+                fileName: "src/components/ResponsePanel.tsx",
+                lineNumber: 102,
+                columnNumber: 17
+            }, this)
+        ]
+    }, void 0, true);
+    var _headers, _headers1;
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                style: {
+                    paddingBottom: "4px",
+                    fontSize: "11px",
+                    textAlign: "right",
+                    paddingRight: "25px"
+                },
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                        style: {
+                            color: "var(--panel-tab-foreground)"
+                        },
+                        children: "Status Code : "
+                    }, void 0, false, {
+                        fileName: "src/components/ResponsePanel.tsx",
+                        lineNumber: 110,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                        style: {
+                            fontWeight: "bold"
+                        },
+                        children: responseData.status
+                    }, void 0, false, {
+                        fileName: "src/components/ResponsePanel.tsx",
+                        lineNumber: 111,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                        style: {
+                            fontWeight: "bold",
+                            color: "var(--button-primary-background)",
+                            marginLeft: "4px"
+                        },
+                        children: RESPONSE_CODES[responseData.status]
+                    }, void 0, false, {
+                        fileName: "src/components/ResponsePanel.tsx",
+                        lineNumber: 112,
+                        columnNumber: 17
+                    }, this),
+                    message
+                ]
+            }, void 0, true, {
+                fileName: "src/components/ResponsePanel.tsx",
+                lineNumber: 109,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodePanels), {
+                style: {
+                    height: "100%",
+                    flex: "1.5"
+                },
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodePanelTab), {
+                        id: "body",
+                        children: "Body"
+                    }, void 0, false, {
+                        fileName: "src/components/ResponsePanel.tsx",
+                        lineNumber: 119,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodePanelTab), {
+                        id: "reqHeaders",
+                        children: "Request Headers"
+                    }, void 0, false, {
+                        fileName: "src/components/ResponsePanel.tsx",
+                        lineNumber: 120,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodePanelTab), {
+                        id: "respHeaders",
+                        children: "Response Headers"
+                    }, void 0, false, {
+                        fileName: "src/components/ResponsePanel.tsx",
+                        lineNumber: 121,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodePanelView), {
+                        id: "bodyPanel",
+                        style: {
+                            flexDirection: "column"
+                        },
+                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                            style: {
+                                flex: "1",
+                                borderLeft: "8px solid",
+                                paddingLeft: "10px"
+                            },
+                            children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("pre", {
+                                children: JSON.stringify(responseData.data, undefined, 2)
+                            }, void 0, false, {
+                                fileName: "src/components/ResponsePanel.tsx",
+                                lineNumber: 124,
+                                columnNumber: 25
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "src/components/ResponsePanel.tsx",
+                            lineNumber: 123,
+                            columnNumber: 21
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "src/components/ResponsePanel.tsx",
+                        lineNumber: 122,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodePanelView), {
+                        id: "reqHeadersPanel",
+                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                            style: {
+                                flex: "1"
+                            },
+                            children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _paramsPanel.ParamsPanel), {
+                                readOnly: true,
+                                onChange: ()=>{},
+                                params: (_headers = responseData.config.headers) !== null && _headers !== void 0 ? _headers : {},
+                                paramsArray: reqHeaders,
+                                sectionName: "s",
+                                arraySectionName: "ss"
+                            }, void 0, false, {
+                                fileName: "src/components/ResponsePanel.tsx",
+                                lineNumber: 129,
+                                columnNumber: 25
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "src/components/ResponsePanel.tsx",
+                            lineNumber: 128,
+                            columnNumber: 21
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "src/components/ResponsePanel.tsx",
+                        lineNumber: 127,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodePanelView), {
+                        id: "respHeadersPanel",
+                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                            style: {
+                                flex: "1"
+                            },
+                            children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _paramsPanel.ParamsPanel), {
+                                readOnly: true,
+                                onChange: ()=>{},
+                                params: (_headers1 = responseData.headers) !== null && _headers1 !== void 0 ? _headers1 : {},
+                                paramsArray: respHeaders,
+                                sectionName: "s",
+                                arraySectionName: "ss"
+                            }, void 0, false, {
+                                fileName: "src/components/ResponsePanel.tsx",
+                                lineNumber: 141,
+                                columnNumber: 25
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "src/components/ResponsePanel.tsx",
+                            lineNumber: 140,
+                            columnNumber: 21
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "src/components/ResponsePanel.tsx",
+                        lineNumber: 139,
+                        columnNumber: 17
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "src/components/ResponsePanel.tsx",
+                lineNumber: 118,
+                columnNumber: 13
+            }, this)
+        ]
+    }, void 0, true);
+}
+_s(ResponsePanel, "GAaf7lN4+6HeVwtHOKMIuKWD/kg=");
+_c = ResponsePanel;
+var _c;
+$RefreshReg$(_c, "ResponsePanel");
+
+  $parcel$ReactRefreshHelpers$dd22.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react":"9sfFD","@parcel/transformer-js/src/esmodule-helpers.js":"5oERU","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"ftrPk","react/jsx-dev-runtime":"eGH5i","@vscode/webview-ui-toolkit/react":"lkQje","./ParamsPanel":"dvu2Y"}],"7vqLy":[function(require,module,exports) {
 var $parcel$ReactRefreshHelpers$4ed5 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;

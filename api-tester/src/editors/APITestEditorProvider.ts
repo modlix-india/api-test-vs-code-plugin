@@ -187,9 +187,19 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
     <html lang="en">
       <head>
         <meta charset="utf-8" />
+        <style>
+        @-webkit-keyframes rotating {
+            from{
+                -webkit-transform: rotate(360deg);
+            }
+            to{
+                -webkit-transform: rotate(10deg);
+            }
+        }
+        </style>
       </head>
-      <body>
-        <div id="app"></div>
+      <body style="height:100vh; overflow: hidden; display: flex;">
+        <div id="app" style="flex:1;display:flex"></div>
         <script src="${scriptUri}"></script>
         <link rel="stylesheet" href="${cssUri}" />
       </body>

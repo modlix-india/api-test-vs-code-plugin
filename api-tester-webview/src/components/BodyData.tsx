@@ -7,6 +7,7 @@ import {
 } from '@vscode/webview-ui-toolkit/react';
 import React, { useEffect, useState } from 'react';
 import { convertToArray } from '../util/convertToArray';
+import { UUID } from '../util/uuid';
 import { ParamsPanel } from './ParamsPanel';
 
 const rawTypes = {
@@ -110,10 +111,16 @@ export function BodyData({ readOnly, document, onChange, onError }) {
                     } else {
                         if (typeof data === 'object') data = JSON.stringify(data, undefined, 2);
                     }
+                    const ha = [...(document.headersArray ?? [])];
+                    const ind = ha.findIndex(([, k]) => k === 'Content-Type');
+                    const newRec = [UUID(), 'Content-Type', rawTypes[e.target.value][0], true, 'STRING'];
+                    if (ind !== -1) ha.splice(ind, 1, newRec);
+                    else ha.push(newRec);
                     onChange([
                         ['backup.bodySubType', e.target.value],
                         ['backup.bodyType', 'raw'],
                         ['headers.Content-Type', rawTypes[e.target.value][0]],
+                        ['headersArray', ha],
                         ['data', data],
                         ['backup.rawdata', data],
                     ]);
@@ -153,6 +160,9 @@ export function BodyData({ readOnly, document, onChange, onError }) {
 }
 
 function toBodyType(document: any, bodySubType: string | undefined, toBodyType: string, onError) {
+    const ha = [...(document.headersArray ?? [])];
+    const ind = ha.findIndex(([, k]) => k === 'Content-Type');
+
     if (toBodyType === 'none')
         return [
             ['data', undefined],
@@ -167,16 +177,17 @@ function toBodyType(document: any, bodySubType: string | undefined, toBodyType: 
                 a[k] = v;
                 return a;
             }, {});
-
+        const nbtype = toBodyType === 'form-data' ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
+        const newRec = [UUID(), 'Content-Type', nbtype, true, 'STRING'];
+        if (ind !== -1) ha.splice(ind, 1, newRec);
+        else ha.push(newRec);
         return [
             ['data', data],
             ['backup.bodySubType', bodySubType],
             ['backup.bodyType', toBodyType],
             ['backup.data', data],
-            [
-                'headers.Content-Type',
-                toBodyType === 'form-data' ? 'multipart/form-data' : 'application/x-www-form-urlencoded',
-            ],
+            ['headers.Content-Type', nbtype],
+            ['headersArray', ha],
         ];
     }
 
@@ -192,11 +203,16 @@ function toBodyType(document: any, bodySubType: string | undefined, toBodyType: 
                 data = {};
             }
         }
+
+        const newRec = [UUID(), 'Content-Type', rawTypes[bodySubType][0], true, 'STRING'];
+        if (ind !== -1) ha.splice(ind, 1, newRec);
+        else ha.push(newRec);
         return [
             ['headers.Content-Type', rawTypes[bodySubType][0]],
             ['backup.bodySubType', bodySubType],
             ['backup.bodyType', toBodyType],
             ['data', data],
+            ['headersArray', ha],
         ];
     }
 }

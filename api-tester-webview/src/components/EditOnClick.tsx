@@ -103,6 +103,8 @@ export function EditOnClick(props) {
                 onKeyUp={(e) => onChangeCallBack(valueType, (e.target as HTMLInputElement).value)}
             ></VSCodeTextArea>
         );
+    } else if (readOnly) {
+        valueEditor = <span>{value ?? placeholder}</span>;
     } else {
         valueEditor = (
             <VSCodeTextField
