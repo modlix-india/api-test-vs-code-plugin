@@ -1,5 +1,5 @@
 {
-    "name": "@fincity/api-tester",
+    "name": "api-tester",
     "displayName": "API Tester",
     "description": "To test Rest and Graph API based on definition",
     "version": "1.0.0",
@@ -12,6 +12,7 @@
         "Other"
     ],
     "author": "Kiran Kumar Grandhi",
+    "license": "MIT",
     "activationEvents": [
         "onCustomEditor:api-tester.varEditor",
         "onCustomEditor:api-tester.apiEditor"
@@ -41,10 +42,14 @@
             }
         ]
     },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/fincity-india/api-test-vs-code-plugin"
+    },
     "scripts": {
-        "vscode:prepublish": "npm run package",
-        "compile": "webpack",
-        "watch": "webpack --watch",
+        "vscode:prepublish": "npm --prefix ../api-tester-webview run build && npm run package",
+        "compile": "npm --prefix ../api-tester-webview run build && webpack",
+        "watch": "concurrently \"webpack --watch\"  \"cd ../api-tester-webview && npm start\"",
         "package": "webpack --mode production --devtool hidden-source-map",
         "compile-tests": "tsc -p . --outDir out",
         "watch-tests": "tsc -p . -w --outDir out",
@@ -65,6 +70,7 @@
         "eslint": "^8.20.0",
         "glob": "^8.0.3",
         "mocha": "^10.0.0",
+        "terser-webpack-plugin": "^5.3.6",
         "ts-loader": "^9.3.1",
         "typescript": "^4.7.4",
         "webpack": "^5.74.0",

@@ -4,7 +4,8 @@
     "description": "Webview for the api-tester-plugin",
     "browserslist": "> 0.5%, last 2 versions, not dead",
     "scripts": {
-        "start": "parcel watch src/index.tsx --dist-dir ../api-tester/media"
+        "start": "parcel watch src/index.tsx --dist-dir ../api-tester/media --no-cache",
+        "build": "parcel build src/index.tsx --dist-dir ../api-tester/media --no-cache"
     },
     "keywords": [
         "api-tester",
@@ -28,7 +29,7 @@
         ]
     },
     "author": "Kiran Kumar Grandhi",
-    "license": "MIT",
+    "license": "SEE LICENSE IN ../LICENSE",
     "devDependencies": {
         "@babel/core": "^7.12.0",
         "@babel/preset-typescript": "^7.18.6",
