@@ -1,7 +1,7 @@
 {
     "name": "rest-api-tester",
     "displayName": "REST API Tester",
-    "description": "To test Rest based on definition",
+    "description": "REST API Tester, and store the definition with ui similar to postman",
     "version": "1.0.0",
     "icon": "logo.png",
     "engines": {

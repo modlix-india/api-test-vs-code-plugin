@@ -1,6 +1,6 @@
-# API Test Plugin
+# REST API Tester Plugin
 
-This repository contains the REST API Tester plugin source code.
+This repository contains the REST API Tester plugin source code. The UI is similar to Postman. Easy to use and secure to distribute among your team for free.
 
 This plugin consists of two editors, one **apit** file editor and **var** file editor.
 
