@@ -34,28 +34,18 @@ function getValueByType(vt, v) {
 export function EditOnClick(props) {
     const {
         readOnly,
-        value: inValue,
+        value,
         onChange,
         placeholder,
         valueType = EDITOR_TYPES.STRING,
         valueTypes = [EDITOR_TYPES.STRING],
     } = props;
 
-    const [value, setValue] = useState(getValueByType(valueType, inValue));
-
-    useEffect(() => {
-        let v = getValueByType(valueType, inValue);
-        if (deepEqual(v, value)) return;
-        console.log(v, value, 'Different');
-        setValue(v);
-    }, [valueType, inValue]);
-
     const onError: (err: any) => void = props.onError ? props.onError : undefined;
 
     function onChangeCallBack(vt, v) {
         v = getValueByType(vt, v);
-        if (deepEqual(v, value)) return;
-        setValue(v);
+        if (deepEqual(v, value) && vt === valueType) return;
         onChange(vt, v);
     }
 
@@ -96,7 +86,7 @@ export function EditOnClick(props) {
             <VSCodeTextArea
                 readOnly={readOnly}
                 autofocus={true}
-                value={typeof value === 'object' ? JSON.stringify(value, undefined, 2) : value}
+                value={typeof value === 'object' && value ? JSON.stringify(value, undefined, 2) : value}
                 placeholder={placeholder}
                 rows={8}
                 style={{ flex: 1 }}

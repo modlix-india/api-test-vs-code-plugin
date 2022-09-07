@@ -51843,7 +51843,6 @@ function ParamsPanel(props) {
         ]);
     }
     function valueChanged(id, k, value, v, include, type) {
-        if (value === v) return;
         if (value === "") value = undefined;
         const newParams = {
             ...params,
@@ -51899,12 +51898,12 @@ function ParamsPanel(props) {
                                 className: "codicon codicon-trash"
                             }, void 0, false, {
                                 fileName: "src/components/ParamsPanel.tsx",
-                                lineNumber: 141,
+                                lineNumber: 140,
                                 columnNumber: 33
                             }, this)
                         }, `${id}DeleteButton`, false, {
                             fileName: "src/components/ParamsPanel.tsx",
-                            lineNumber: 136,
+                            lineNumber: 135,
                             columnNumber: 29
                         }, this),
                         /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodeCheckbox), {
@@ -51912,14 +51911,14 @@ function ParamsPanel(props) {
                             onChange: (e)=>includeCallBack(e, k, id, v, valueType)
                         }, `${id}CheckBox`, false, {
                             fileName: "src/components/ParamsPanel.tsx",
-                            lineNumber: 143,
+                            lineNumber: 142,
                             columnNumber: 29
                         }, this)
                     ]
                 }, void 0, true)
             }, void 0, false, {
                 fileName: "src/components/ParamsPanel.tsx",
-                lineNumber: 131,
+                lineNumber: 130,
                 columnNumber: 17
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -51938,12 +51937,12 @@ function ParamsPanel(props) {
                     }
                 }, `${id}Key`, false, {
                     fileName: "src/components/ParamsPanel.tsx",
-                    lineNumber: 152,
+                    lineNumber: 151,
                     columnNumber: 21
                 }, this)
             }, void 0, false, {
                 fileName: "src/components/ParamsPanel.tsx",
-                lineNumber: 151,
+                lineNumber: 150,
                 columnNumber: 17
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -51957,18 +51956,18 @@ function ParamsPanel(props) {
                     valueType: valueType
                 }, `${id}Value`, false, {
                     fileName: "src/components/ParamsPanel.tsx",
-                    lineNumber: 166,
+                    lineNumber: 165,
                     columnNumber: 21
                 }, this)
             }, void 0, false, {
                 fileName: "src/components/ParamsPanel.tsx",
-                lineNumber: 165,
+                lineNumber: 164,
                 columnNumber: 17
             }, this)
         ]
     }, id, true, {
         fileName: "src/components/ParamsPanel.tsx",
-        lineNumber: 127,
+        lineNumber: 126,
         columnNumber: 13
     }, this));
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -51990,7 +51989,7 @@ function ParamsPanel(props) {
                         style: firstColumn
                     }, void 0, false, {
                         fileName: "src/components/ParamsPanel.tsx",
-                        lineNumber: 189,
+                        lineNumber: 188,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -52003,12 +52002,12 @@ function ParamsPanel(props) {
                             children: "KEY"
                         }, void 0, false, {
                             fileName: "src/components/ParamsPanel.tsx",
-                            lineNumber: 191,
+                            lineNumber: 190,
                             columnNumber: 21
                         }, this)
                     }, void 0, false, {
                         fileName: "src/components/ParamsPanel.tsx",
-                        lineNumber: 190,
+                        lineNumber: 189,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -52020,25 +52019,25 @@ function ParamsPanel(props) {
                             children: "VALUE"
                         }, void 0, false, {
                             fileName: "src/components/ParamsPanel.tsx",
-                            lineNumber: 194,
+                            lineNumber: 193,
                             columnNumber: 21
                         }, this)
                     }, void 0, false, {
                         fileName: "src/components/ParamsPanel.tsx",
-                        lineNumber: 193,
+                        lineNumber: 192,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "src/components/ParamsPanel.tsx",
-                lineNumber: 188,
+                lineNumber: 187,
                 columnNumber: 13
             }, this),
             rows
         ]
     }, void 0, true, {
         fileName: "src/components/ParamsPanel.tsx",
-        lineNumber: 180,
+        lineNumber: 179,
         columnNumber: 9
     }, this);
 }
@@ -52081,7 +52080,6 @@ var _react = require("@vscode/webview-ui-toolkit/react");
 var _react1 = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react1);
 var _deepEqual = require("../util/deepEqual");
-var _s = $RefreshSig$();
 let EDITOR_TYPES;
 (function(EDITOR_TYPES) {
     EDITOR_TYPES["STRING"] = "STRING";
@@ -52101,25 +52099,13 @@ function getValueByType(vt, v) {
     return v;
 }
 function EditOnClick(props) {
-    _s();
-    const { readOnly , value: inValue , onChange , placeholder , valueType =EDITOR_TYPES.STRING , valueTypes =[
+    const { readOnly , value , onChange , placeholder , valueType =EDITOR_TYPES.STRING , valueTypes =[
         EDITOR_TYPES.STRING
     ] ,  } = props;
-    const [value, setValue] = (0, _react1.useState)(getValueByType(valueType, inValue));
-    (0, _react1.useEffect)(()=>{
-        let v = getValueByType(valueType, inValue);
-        if ((0, _deepEqual.deepEqual)(v, value)) return;
-        console.log(v, value, "Different");
-        setValue(v);
-    }, [
-        valueType,
-        inValue
-    ]);
     const onError = props.onError ? props.onError : undefined;
     function onChangeCallBack(vt, v) {
         v = getValueByType(vt, v);
-        if ((0, _deepEqual.deepEqual)(v, value)) return;
-        setValue(v);
+        if ((0, _deepEqual.deepEqual)(v, value) && vt === valueType) return;
         onChange(vt, v);
     }
     let valueTypesEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {}, void 0, false);
@@ -52133,12 +52119,12 @@ function EditOnClick(props) {
                 children: e
             }, e, false, {
                 fileName: "src/components/EditOnClick.tsx",
-                lineNumber: 73,
+                lineNumber: 63,
                 columnNumber: 25
             }, this))
     }, void 0, false, {
         fileName: "src/components/EditOnClick.tsx",
-        lineNumber: 65,
+        lineNumber: 55,
         columnNumber: 13
     }, this);
     let valueEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {}, void 0, false);
@@ -52152,13 +52138,13 @@ function EditOnClick(props) {
         }
     }, void 0, false, {
         fileName: "src/components/EditOnClick.tsx",
-        lineNumber: 84,
+        lineNumber: 74,
         columnNumber: 13
     }, this);
     else if (valueType === EDITOR_TYPES.JSON) valueEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodeTextArea), {
         readOnly: readOnly,
         autofocus: true,
-        value: typeof value === "object" ? JSON.stringify(value, undefined, 2) : value,
+        value: typeof value === "object" && value ? JSON.stringify(value, undefined, 2) : value,
         placeholder: placeholder,
         rows: 8,
         style: {
@@ -52167,14 +52153,14 @@ function EditOnClick(props) {
         onKeyUp: (e)=>onChangeCallBack(valueType, e.target.value)
     }, void 0, false, {
         fileName: "src/components/EditOnClick.tsx",
-        lineNumber: 96,
+        lineNumber: 86,
         columnNumber: 13
     }, this);
     else if (readOnly) valueEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
         children: value !== null && value !== void 0 ? value : placeholder
     }, void 0, false, {
         fileName: "src/components/EditOnClick.tsx",
-        lineNumber: 107,
+        lineNumber: 97,
         columnNumber: 23
     }, this);
     else valueEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodeTextField), {
@@ -52188,7 +52174,7 @@ function EditOnClick(props) {
         onKeyUp: (e)=>onChangeCallBack(valueType, e.target.value)
     }, void 0, false, {
         fileName: "src/components/EditOnClick.tsx",
-        lineNumber: 110,
+        lineNumber: 100,
         columnNumber: 13
     }, this);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -52204,11 +52190,10 @@ function EditOnClick(props) {
         ]
     }, void 0, true, {
         fileName: "src/components/EditOnClick.tsx",
-        lineNumber: 122,
+        lineNumber: 112,
         columnNumber: 9
     }, this);
 }
-_s(EditOnClick, "F/xJ1jvdE8KzmpqK7FAfY7ykFr8=");
 _c = EditOnClick;
 var _c;
 $RefreshReg$(_c, "EditOnClick");
@@ -52274,9 +52259,9 @@ var _react = require("@vscode/webview-ui-toolkit/react");
 var _react1 = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react1);
 var _convertToArray = require("../util/convertToArray");
+var _deepEqual = require("../util/deepEqual");
 var _uuid = require("../util/uuid");
 var _paramsPanel = require("./ParamsPanel");
-var _s = $RefreshSig$();
 const rawTypes = {
     json: [
         "application/json",
@@ -52301,40 +52286,18 @@ const rawTypes = {
 };
 function BodyData({ readOnly , document , onChange , onError  }) {
     var ref, ref1, ref2;
-    _s();
-    const [textBody, setTextBody] = (0, _react1.useState)("");
     let bodyEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {}, void 0, false);
     let bodyType = (ref = document.backup) === null || ref === void 0 ? void 0 : ref.bodyType;
     let bodySubType = (ref1 = document.backup) === null || ref1 === void 0 ? void 0 : ref1.bodySubType;
     if (bodyType === undefined || bodyType === null) bodyType = "raw";
     if (bodySubType === undefined || bodySubType === null) bodySubType = "json";
-    (0, _react1.useEffect)(()=>{
-        var ref;
-        if (bodyType !== "raw" || !((ref = document.backup) === null || ref === void 0 ? void 0 : ref.rawdata)) {
-            setTextBody("");
-            return;
-        }
-        if (bodySubType === "json") try {
-            var _rawdata;
-            let x = (_rawdata = document.backup.rawdata) !== null && _rawdata !== void 0 ? _rawdata : {};
-            if (typeof x === "object") x = JSON.stringify(x, undefined, 2);
-            setTextBody(x);
-        } catch (error) {
-            onError(error);
-            setTextBody("");
-        }
-        else setTextBody(document.backup.rawdata);
-    }, [
-        bodyType,
-        document
-    ]);
     let subTypeEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {}, void 0, false);
     var _data, ref3;
     if (bodyType === "none") bodyEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         children: " No Body for this request "
     }, void 0, false, {
         fileName: "src/components/BodyData.tsx",
-        lineNumber: 55,
+        lineNumber: 37,
         columnNumber: 22
     }, this);
     else if (bodyType === "form-data" || bodyType === "x-www-form-urlencoded") bodyEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _paramsPanel.ParamsPanel), {
@@ -52346,42 +52309,44 @@ function BodyData({ readOnly , document , onChange , onError  }) {
         arraySectionName: "backup.dataArray"
     }, void 0, false, {
         fileName: "src/components/BodyData.tsx",
-        lineNumber: 58,
+        lineNumber: 40,
         columnNumber: 13
     }, this);
     else if (bodyType === "raw") {
+        var ref4;
         function textAreaChanged(e) {
             let x = e.target.value;
-            let data = x;
-            if (bodySubType === "json") try {
-                data = JSON.parse(x);
-            } catch (error) {
-                onError(error);
-                data = {};
-            }
-            onChange([
+            if (!(0, _deepEqual.deepEqual)(x, document.backup.rawdata)) onChange([
                 [
                     "backup.rawdata",
                     x
-                ],
-                [
-                    "data",
-                    data
-                ], 
+                ]
             ]);
         }
+        var ref5;
         bodyEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodeTextArea), {
             readOnly: readOnly,
             rows: 12,
-            value: textBody,
-            onChange: (e)=>setTextBody(e.target.value),
+            value: (ref5 = (ref4 = document.backup) === null || ref4 === void 0 ? void 0 : ref4.rawdata) !== null && ref5 !== void 0 ? ref5 : "",
             onKeyUp: (e)=>{
-                if (e.metaKey || e.ctrlKey) textAreaChanged(e);
+                textAreaChanged(e);
             },
-            onBlur: textAreaChanged
+            onBlur: (e)=>{
+                try {
+                    let data = JSON.parse(document.backup.rawdata);
+                    onChange([
+                        [
+                            "data",
+                            data
+                        ]
+                    ]);
+                } catch (err) {
+                    onError(err);
+                }
+            }
         }, void 0, false, {
             fileName: "src/components/BodyData.tsx",
-            lineNumber: 86,
+            lineNumber: 57,
             columnNumber: 13
         }, this);
         subTypeEditor = /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodeDropdown), {
@@ -52444,12 +52409,12 @@ function BodyData({ readOnly , document , onChange , onError  }) {
                     children: label
                 }, k, false, {
                     fileName: "src/components/BodyData.tsx",
-                    lineNumber: 131,
+                    lineNumber: 108,
                     columnNumber: 21
                 }, this))
         }, void 0, false, {
             fileName: "src/components/BodyData.tsx",
-            lineNumber: 99,
+            lineNumber: 76,
             columnNumber: 13
         }, this);
     }
@@ -52481,30 +52446,29 @@ function BodyData({ readOnly , document , onChange , onError  }) {
                             children: e
                         }, e, false, {
                             fileName: "src/components/BodyData.tsx",
-                            lineNumber: 143,
+                            lineNumber: 120,
                             columnNumber: 21
                         }, this)),
                     subTypeEditor
                 ]
             }, void 0, true, {
                 fileName: "src/components/BodyData.tsx",
-                lineNumber: 141,
+                lineNumber: 118,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react.VSCodeDivider), {}, void 0, false, {
                 fileName: "src/components/BodyData.tsx",
-                lineNumber: 156,
+                lineNumber: 133,
                 columnNumber: 13
             }, this),
             bodyEditor
         ]
     }, void 0, true, {
         fileName: "src/components/BodyData.tsx",
-        lineNumber: 140,
+        lineNumber: 117,
         columnNumber: 9
     }, this);
 }
-_s(BodyData, "oPOLgX5AE7gZKWlR3EDNYiTnu0E=");
 _c = BodyData;
 function toBodyType(document, bodySubType, toBodyType, onError) {
     var _headersArray;
@@ -52620,7 +52584,7 @@ $RefreshReg$(_c, "BodyData");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"eGH5i","@vscode/webview-ui-toolkit/react":"lkQje","react":"9sfFD","../util/convertToArray":"iLN85","./ParamsPanel":"dvu2Y","@parcel/transformer-js/src/esmodule-helpers.js":"5oERU","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"ftrPk","../util/uuid":"iYafd"}],"5FQah":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"eGH5i","@vscode/webview-ui-toolkit/react":"lkQje","react":"9sfFD","../util/convertToArray":"iLN85","./ParamsPanel":"dvu2Y","@parcel/transformer-js/src/esmodule-helpers.js":"5oERU","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"ftrPk","../util/uuid":"iYafd","../util/deepEqual":"gg5HW"}],"5FQah":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "onHttpMethodChange", ()=>onHttpMethodChange);
@@ -52646,7 +52610,6 @@ function onHttpMethodChange(newMethod, json, vscode) {
 function onUrlChange(newUrl, json, vscode) {
     json = duplicate(json);
     json.url = newUrl;
-    console.log(newUrl);
     vscode.postMessage({
         type: MSG_TYP_DOCCHANGE,
         document: json

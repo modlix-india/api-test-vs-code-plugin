@@ -99,7 +99,6 @@ export function ParamsPanel(props) {
     }
 
     function valueChanged(id, k, value, v, include, type) {
-        if (value === v) return;
         if (value === '') value = undefined;
 
         const newParams = { ...params, [k]: value };

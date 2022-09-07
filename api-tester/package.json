@@ -71,7 +71,6 @@
         "webpack-cli": "^4.10.0"
     },
     "dependencies": {
-        "axios": "^0.27.2",
-        "@fincity/kirun-js": "^1.1.1"
+        "axios": "^0.27.2"
     }
 }

@@ -7,6 +7,7 @@ import {
 } from '@vscode/webview-ui-toolkit/react';
 import React, { useEffect, useState } from 'react';
 import { convertToArray } from '../util/convertToArray';
+import { deepEqual } from '../util/deepEqual';
 import { UUID } from '../util/uuid';
 import { ParamsPanel } from './ParamsPanel';
 
@@ -19,8 +20,6 @@ const rawTypes = {
 };
 
 export function BodyData({ readOnly, document, onChange, onError }) {
-    const [textBody, setTextBody] = useState('');
-
     let bodyEditor = <></>;
     let bodyType = document.backup?.bodyType;
     let bodySubType: string | undefined = document.backup?.bodySubType;
@@ -32,23 +31,6 @@ export function BodyData({ readOnly, document, onChange, onError }) {
     if (bodySubType === undefined || bodySubType === null) {
         bodySubType = 'json';
     }
-
-    useEffect(() => {
-        if (bodyType !== 'raw' || !document.backup?.rawdata) {
-            setTextBody('');
-            return;
-        }
-        if (bodySubType === 'json') {
-            try {
-                let x: any = document.backup.rawdata ?? {};
-                if (typeof x === 'object') x = JSON.stringify(x, undefined, 2);
-                setTextBody(x);
-            } catch (error) {
-                onError(error);
-                setTextBody('');
-            }
-        } else setTextBody(document.backup.rawdata);
-    }, [bodyType, document]);
 
     let subTypeEditor = <></>;
     if (bodyType === 'none') {
@@ -67,31 +49,26 @@ export function BodyData({ readOnly, document, onChange, onError }) {
     } else if (bodyType === 'raw') {
         function textAreaChanged(e) {
             let x = (e.target as HTMLInputElement).value;
-            let data: any = x;
-            if (bodySubType === 'json') {
-                try {
-                    data = JSON.parse(x);
-                } catch (error) {
-                    onError(error);
-                    data = {};
-                }
-            }
-            onChange([
-                ['backup.rawdata', x],
-                ['data', data],
-            ]);
+
+            if (!deepEqual(x, document.backup.rawdata)) onChange([['backup.rawdata', x]]);
         }
 
         bodyEditor = (
             <VSCodeTextArea
                 readOnly={readOnly}
                 rows={12}
-                value={textBody}
-                onChange={(e) => setTextBody(e.target.value)}
+                value={document.backup?.rawdata ?? ''}
                 onKeyUp={(e) => {
-                    if (e.metaKey || e.ctrlKey) textAreaChanged(e);
+                    textAreaChanged(e);
                 }}
-                onBlur={textAreaChanged}
+                onBlur={(e) => {
+                    try {
+                        let data = JSON.parse(document.backup.rawdata);
+                        onChange([['data', data]]);
+                    } catch (err) {
+                        onError(err);
+                    }
+                }}
             />
         );
 

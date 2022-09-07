@@ -138,11 +138,15 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
                         type: PLG_MSG_TYP_RUNNING,
                     });
 
-                    runAxiosRequest(e.document, e.environment, workspaceFolder?.uri?.fsPath, (data) => {
+                    runAxiosRequest(e.document, e.environment, workspaceFolder?.uri?.fsPath, (data, err) => {
                         if (data?.request) {
                             delete data.request.res;
                             delete data.request.socket;
                             delete data.request._redirectable;
+                        }
+
+                        if (err) {
+                            vscode.window.showErrorMessage(`${err?.name} : ${err?.message}`);
                         }
                         webviewPanel.webview.postMessage({
                             type: PLG_MSG_TYP_DONE,
