@@ -16,7 +16,7 @@ Install Visual Studio Code
 
 ## Getting Started
 
-UI Example
+![REST API Tester](apit.gif)
 
 ## License
 

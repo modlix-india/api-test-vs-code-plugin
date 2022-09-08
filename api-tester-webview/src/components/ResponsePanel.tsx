@@ -129,7 +129,9 @@ export function ResponsePanel({ readOnly, responseData }) {
                 <VSCodePanelTab id="respHeaders">Response Headers</VSCodePanelTab>
                 <VSCodePanelView id="bodyPanel" style={{ flexDirection: 'column' }}>
                     <div style={{ flex: '1', borderLeft: '8px solid', paddingLeft: '10px' }}>
-                        <pre>{JSON.stringify(responseData.data, undefined, 2)}</pre>
+                        <pre style={{ whiteSpace: 'break-spaces' }}>
+                            {JSON.stringify(responseData.data, undefined, 2)}
+                        </pre>
                     </div>
                 </VSCodePanelView>
                 <VSCodePanelView id="reqHeadersPanel">

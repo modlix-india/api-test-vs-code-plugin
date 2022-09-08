@@ -158,13 +158,16 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
                 case MSG_TYP_ENVCHANGE:
                     if (workspaceFolder) {
                         const settings = path.resolve(workspaceFolder.uri.fsPath, '.settings');
+                        const settingsURI = vscode.Uri.file(path.resolve(workspaceFolder?.uri?.fsPath, '.settings'));
                         const hasSettings = fs.existsSync(settings);
                         if (hasSettings) {
                             fs.readFile(settings, 'utf8', (err, data) => {
                                 try {
                                     const obj = JSON.parse(data);
                                     obj.environment = e.environment;
-                                    fs.writeFile(settings, JSON.stringify(obj, undefined, 2), 'utf8', (err) => {});
+                                    fs.writeFile(settings, JSON.stringify(obj, undefined, 2), 'utf8', (err) => {
+                                        readSettings(settingsURI);
+                                    });
                                 } catch (err) {}
                             });
                         } else {
@@ -172,7 +175,9 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
                                 settings,
                                 JSON.stringify({ environment: e.environment }, undefined, 2),
                                 'utf8',
-                                (err) => {},
+                                (err) => {
+                                    readSettings(settingsURI);
+                                },
                             );
                         }
                     }

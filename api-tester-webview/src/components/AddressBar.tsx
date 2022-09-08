@@ -15,7 +15,7 @@ export function AddressBar({
         <div style={{ display: 'flex', flexDirection: 'row', gap: '5px' }}>
             <VSCodeDropdown
                 id="methods"
-                value={document.method}
+                value={document.method ?? 'get'}
                 onChange={(e) => onMethodChange(e.target.value)}
                 disabled={readOnly}
             >
@@ -45,6 +45,10 @@ export function AddressBar({
                 id="address"
                 value={document.url ?? ''}
                 onKeyUp={(e) => {
+                    if (e.key === 'Enter') {
+                        onSend();
+                        return;
+                    }
                     let v = (e.target as HTMLInputElement).value;
                     if (v === document.url) return;
                     onUrlChange(v);
@@ -67,7 +71,7 @@ export function AddressBar({
                     </VSCodeOption>
                 ))}
                 <VSCodeOption label={'Nothing'} value={''}>
-                    {'No Var'}
+                    {'No var'}
                 </VSCodeOption>
             </VSCodeDropdown>
         </div>

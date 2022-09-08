@@ -14,6 +14,10 @@ export function runAxiosRequest(
     delete request.headersArray;
     delete request.backup;
 
+    if (!request.method) {
+        request.method = 'get';
+    }
+
     if (workspace) {
         readFile(path.resolve(workspace, 'global.var'), 'utf8', (gerr, gdata) => {
             let vars = {};
