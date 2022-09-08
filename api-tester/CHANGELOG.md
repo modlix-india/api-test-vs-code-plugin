@@ -6,3 +6,7 @@ All notable changes to the "rest-api-tester" extension will be documented in thi
 
 -   Created **apit** file editor for defining the rest call.
 -   Created **var** file editor for defining variables.
+
+## [1.0.1] - 2022-08-08
+
+-   Lagging while typing issue is fixed.

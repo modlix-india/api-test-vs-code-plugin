@@ -5,16 +5,18 @@ const MSG_TYP_DOCCHANGE = 'docchange';
 const MSG_TYP_SEND = 'send';
 const MSG_TYP_ENVCHANGE = 'envchange';
 
-export function onHttpMethodChange(newMethod: string, json: any, vscode: any) {
+export function onHttpMethodChange(newMethod: string, json: any, vscode: any): any {
     json = duplicate(json);
     json.method = newMethod;
     vscode.postMessage({
         type: MSG_TYP_DOCCHANGE,
         document: json,
     });
+
+    return json;
 }
 
-export function onUrlChange(newUrl: string, json: any, vscode: any) {
+export function onUrlChange(newUrl: string, json: any, vscode: any): any {
     json = duplicate(json);
     json.url = newUrl;
 
@@ -22,6 +24,7 @@ export function onUrlChange(newUrl: string, json: any, vscode: any) {
         type: MSG_TYP_DOCCHANGE,
         document: json,
     });
+    return json;
 }
 
 export function onError(err: any, vscode: any) {
@@ -39,7 +42,7 @@ export function onSend(json: any, currentEnvironment: string, vscode: any) {
     });
 }
 
-export function onDocumentChange(sectionValues: [[key: string, value: any | undefined]], json: any, vscode: any) {
+export function onDocumentChange(sectionValues: [[key: string, value: any | undefined]], json: any, vscode: any): any {
     json = duplicate(json);
     for (const [section, value] of sectionValues) {
         if (section === 'data') {
@@ -52,6 +55,7 @@ export function onDocumentChange(sectionValues: [[key: string, value: any | unde
         type: MSG_TYP_DOCCHANGE,
         document: json,
     });
+    return json;
 }
 
 export function onChangeEnvironment(env: string, vscode: any) {

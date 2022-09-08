@@ -2,7 +2,7 @@
     "name": "rest-api-tester",
     "displayName": "REST API Tester",
     "description": "REST API Tester, and store the definition with ui similar to postman",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "icon": "logo.png",
     "engines": {
         "vscode": "^1.70.0"
