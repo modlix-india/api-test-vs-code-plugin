@@ -25,10 +25,10 @@ export function BodyData({ readOnly, document, onChange, onError }) {
     let bodySubType: string | undefined = document.backup?.bodySubType;
 
     if (bodyType === undefined || bodyType === null) {
-        bodyType = 'raw';
+        bodyType = 'none';
     }
 
-    if (bodySubType === undefined || bodySubType === null) {
+    if (bodyType === 'raw' && (bodySubType === undefined || bodySubType === null)) {
         bodySubType = 'json';
     }
 
