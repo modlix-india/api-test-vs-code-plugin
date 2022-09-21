@@ -1,5 +1,5 @@
 import { VSCodeButton, VSCodeDropdown, VSCodeOption, VSCodeTextField } from '@vscode/webview-ui-toolkit/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 export function AddressBar({
     document,
@@ -11,6 +11,21 @@ export function AddressBar({
     currentEnvironment,
     onEnvironmentChange,
 }) {
+    const [url, setUrl] = useState(document.url ?? '');
+
+    useEffect(() => {
+        if (url == document.url) return;
+        setUrl(document.url ?? '');
+    }, [document.url]);
+
+    useEffect(() => {
+        const handle = setTimeout(() => {
+            if (url === document.url) return;
+            onUrlChange(url);
+        }, 600);
+        return () => clearTimeout(handle);
+    }, [url]);
+
     return (
         <div style={{ display: 'flex', flexDirection: 'row', gap: '5px' }}>
             <VSCodeDropdown
@@ -43,15 +58,14 @@ export function AddressBar({
             </VSCodeDropdown>
             <VSCodeTextField
                 id="address"
-                value={document.url ?? ''}
+                value={url}
                 onKeyUp={(e) => {
                     if (e.key === 'Enter') {
-                        onSend();
+                        setTimeout(() => onSend(), 800);
                         return;
                     }
                     let v = (e.target as HTMLInputElement).value;
-                    if (v === document.url) return;
-                    onUrlChange(v);
+                    setUrl(v);
                 }}
                 style={{ flex: '1' }}
                 disabled={readOnly}
