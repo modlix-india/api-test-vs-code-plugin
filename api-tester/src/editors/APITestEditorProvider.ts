@@ -150,7 +150,7 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
                         }
                         webviewPanel.webview.postMessage({
                             type: PLG_MSG_TYP_DONE,
-                            data,
+                            data: { ...data },
                         });
                     });
 

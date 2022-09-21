@@ -49,10 +49,22 @@ const RESPONSE_CODES = {
 export function ResponsePanel({ readOnly, responseData }) {
     const [reqHeaders, setReqHeaders] = useState<any>();
     const [respHeaders, setRespHeaders] = useState<any>();
+    const [responseText, setResponseText] = useState('');
 
     useEffect(() => {
         setReqHeaders(Object.entries(responseData?.config?.headers ?? {}).map((e) => [e[0], ...e]));
-        setRespHeaders(Object.entries(responseData?.headers ?? {}).map((e) => [e[0], ...e]));
+        setRespHeaders(
+            Object.entries(responseData?.headers ?? responseData?.response?.headers ?? {}).map((e) => [e[0], ...e]),
+        );
+        if (!responseData) return;
+        const rt = responseData.data ?? responseData.response?.data;
+        if (rt) {
+            if (responseData?.response?.headers['content-type']?.indexOf('json') != -1) {
+                setResponseText(JSON.stringify(rt, undefined, 2));
+            } else {
+                setResponseText(rt);
+            }
+        }
     }, [responseData]);
 
     if (readOnly || !responseData) {
@@ -104,13 +116,13 @@ export function ResponsePanel({ readOnly, responseData }) {
     }
 
     let statusCode = <></>;
-    if (responseData.status) {
+    if (responseData.status ?? responseData.response?.status) {
         statusCode = (
             <>
                 <span style={{ color: 'var(--panel-tab-foreground)' }}>Status Code : </span>
-                <span style={{ fontWeight: 'bold' }}>{responseData.status}</span>
+                <span style={{ fontWeight: 'bold' }}>{responseData.status ?? responseData.response?.status}</span>
                 <span style={{ fontWeight: 'bold', color: 'var(--button-primary-background)', marginLeft: '4px' }}>
-                    {RESPONSE_CODES[responseData.status]}
+                    {responseData.response?.statusText ?? RESPONSE_CODES[responseData.status]}
                 </span>
             </>
         );
@@ -129,9 +141,7 @@ export function ResponsePanel({ readOnly, responseData }) {
                 <VSCodePanelTab id="respHeaders">Response Headers</VSCodePanelTab>
                 <VSCodePanelView id="bodyPanel" style={{ flexDirection: 'column' }}>
                     <div style={{ flex: '1', borderLeft: '8px solid', paddingLeft: '10px' }}>
-                        <pre style={{ whiteSpace: 'break-spaces' }}>
-                            {JSON.stringify(responseData.data, undefined, 2)}
-                        </pre>
+                        <pre style={{ whiteSpace: 'break-spaces' }}>{responseText}</pre>
                     </div>
                 </VSCodePanelView>
                 <VSCodePanelView id="reqHeadersPanel">
