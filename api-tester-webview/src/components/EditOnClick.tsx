@@ -15,7 +15,7 @@ export enum EDITOR_TYPES {
     JSON = 'JSON',
 }
 
-function getValueByType(vt, v) {
+function getValueByType(vt, v, onError) {
     if (vt === EDITOR_TYPES.STRING) {
         v = '' + v;
     } else if (vt === EDITOR_TYPES.NUMBER) {
@@ -26,7 +26,9 @@ function getValueByType(vt, v) {
     } else if (vt === EDITOR_TYPES.JSON) {
         try {
             if (typeof v !== 'object') v = JSON.parse(v);
-        } catch (err) {}
+        } catch (err) {
+            onError(err);
+        }
     }
     return v;
 }
@@ -34,7 +36,7 @@ function getValueByType(vt, v) {
 export function EditOnClick(props) {
     const {
         readOnly,
-        value,
+        value: inValue,
         onChange,
         placeholder,
         valueType = EDITOR_TYPES.STRING,
@@ -43,10 +45,31 @@ export function EditOnClick(props) {
 
     const onError: (err: any) => void = props.onError ? props.onError : undefined;
 
-    function onChangeCallBack(vt, v) {
-        v = getValueByType(vt, v);
-        if (deepEqual(v, value) && vt === valueType) return;
-        onChange(vt, v);
+    const [value, setValue] = useState(inValue);
+
+    useEffect(() => {
+        if (deepEqual(value, inValue)) return;
+        setValue(inValue);
+    }, [inValue]);
+
+    useEffect(() => {
+        const handle = setTimeout(() => {
+            let v = getValueByType(valueType, value, onError);
+            if (deepEqual(v, inValue)) return;
+            onChange(valueType, v);
+        }, 600);
+
+        return () => clearTimeout(handle);
+    }, [value]);
+
+    function onChangeCallBack(v) {
+        if (v === value) return;
+        setValue(v);
+    }
+
+    function onTypeChangeCallBack(vt) {
+        if (vt === valueType) return;
+        onChange(vt, getValueByType(vt, value, onError));
     }
 
     let valueTypesEditor = <></>;
@@ -54,7 +77,7 @@ export function EditOnClick(props) {
         valueTypesEditor = (
             <VSCodeDropdown
                 value={valueType}
-                onChange={(e) => onChangeCallBack(e.target.value as EDITOR_TYPES, value)}
+                onChange={(e) => onTypeChangeCallBack(e.target.value as EDITOR_TYPES)}
                 disabled={readOnly}
             >
                 {Object.keys(EDITOR_TYPES)
@@ -77,7 +100,7 @@ export function EditOnClick(props) {
                 checked={value}
                 onChange={(e) => {
                     const val = (e.target as HTMLInputElement).checked;
-                    onChangeCallBack(valueType, val);
+                    onChangeCallBack(val);
                 }}
             />
         );
@@ -90,7 +113,7 @@ export function EditOnClick(props) {
                 placeholder={placeholder}
                 rows={8}
                 style={{ flex: 1 }}
-                onKeyUp={(e) => onChangeCallBack(valueType, (e.target as HTMLInputElement).value)}
+                onKeyUp={(e) => onChangeCallBack((e.target as HTMLInputElement).value)}
             ></VSCodeTextArea>
         );
     } else if (readOnly) {
@@ -103,7 +126,7 @@ export function EditOnClick(props) {
                 value={value}
                 placeholder={placeholder}
                 style={{ flex: '1' }}
-                onKeyUp={(e) => onChangeCallBack(valueType, (e.target as HTMLInputElement).value)}
+                onKeyUp={(e) => onChangeCallBack((e.target as HTMLInputElement).value)}
             />
         );
     }
