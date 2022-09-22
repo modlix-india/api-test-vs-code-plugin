@@ -138,7 +138,7 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
                         type: PLG_MSG_TYP_RUNNING,
                     });
 
-                    runAxiosRequest(e.document, e.environment, workspaceFolder?.uri?.fsPath, (data, err) => {
+                    runAxiosRequest(e.document, e.environment, workspaceFolder?.uri?.fsPath, (data, time, err) => {
                         if (data?.request) {
                             delete data.request.res;
                             delete data.request.socket;
@@ -156,7 +156,7 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
                         }
                         webviewPanel.webview.postMessage({
                             type: PLG_MSG_TYP_DONE,
-                            data: { ...data },
+                            data: { ...data, totalTimeTaken: time },
                         });
                     });
 

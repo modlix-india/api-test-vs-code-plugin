@@ -128,11 +128,24 @@ export function ResponsePanel({ readOnly, responseData }) {
         );
     }
 
+    console.log(responseData);
+
+    let timeTaken = <></>;
+    if (responseData.totalTimeTaken) {
+        timeTaken = (
+            <>
+                <span style={{ color: 'var(--panel-tab-foreground)', marginLeft: '10px' }}>Time : </span>
+                <span style={{ fontWeight: 'bold' }}>{responseData.totalTimeTaken} ms</span>
+            </>
+        );
+    }
+
     return (
         <>
             <div style={{ paddingBottom: '4px', fontSize: '11px', textAlign: 'right', paddingRight: '25px' }}>
                 {statusCode}
                 {message}
+                {timeTaken}
             </div>
 
             <VSCodePanels style={{ height: '100%', flex: '1.5' }}>

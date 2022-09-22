@@ -6,7 +6,7 @@ export function runAxiosRequest(
     document: any,
     environment: string,
     workspace: string | undefined,
-    callback: (data: any, error?: any) => void,
+    callback: (data: any, time: number, error?: any) => void,
 ) {
     const request = JSON.parse(JSON.stringify(document));
 
@@ -18,6 +18,7 @@ export function runAxiosRequest(
         request.method = 'get';
     }
 
+    const start = new Date().getTime();
     if (workspace) {
         readFile(path.resolve(workspace, 'global.var'), 'utf8', (gerr, gdata) => {
             let vars = {};
@@ -36,11 +37,11 @@ export function runAxiosRequest(
                     try {
                         const processed = processVariables(vars, request);
                         axios(processed).then(
-                            (response) => callback(response),
-                            (reason) => callback(reason),
+                            (response) => callback(response, new Date().getTime() - start),
+                            (reason) => callback(reason, new Date().getTime() - start),
                         );
                     } catch (error) {
-                        callback(undefined, error);
+                        callback(undefined, new Date().getTime() - start, error);
                     }
                 });
             } else {
@@ -48,18 +49,18 @@ export function runAxiosRequest(
                     const processed = processVariables(vars, request);
 
                     axios(processed).then(
-                        (response) => callback(response),
-                        (reason) => callback(reason),
+                        (response) => callback(response, new Date().getTime() - start),
+                        (reason) => callback(reason, new Date().getTime() - start),
                     );
                 } catch (error) {
-                    callback(undefined, error);
+                    callback(undefined, new Date().getTime() - start, error);
                 }
             }
         });
     } else {
         axios(request).then(
-            (response) => callback(response),
-            (reason) => callback(reason),
+            (response) => callback(response, new Date().getTime() - start),
+            (reason) => callback(reason, new Date().getTime() - start),
         );
     }
 }
