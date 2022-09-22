@@ -143,6 +143,12 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
                             delete data.request.res;
                             delete data.request.socket;
                             delete data.request._redirectable;
+
+                            try {
+                                JSON.stringify(data.request);
+                            } catch (err) {
+                                delete data.request;
+                            }
                         }
 
                         if (err) {

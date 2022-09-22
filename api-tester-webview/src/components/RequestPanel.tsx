@@ -10,7 +10,6 @@ export function RequestPanel({ readOnly, document, onChange, onError }) {
             <VSCodePanelTab id="params">Query Params</VSCodePanelTab>
             <VSCodePanelTab id="headers">Headers</VSCodePanelTab>
             <VSCodePanelTab id="body">Body</VSCodePanelTab>
-            <VSCodePanelTab id="preScript">Pre Script</VSCodePanelTab>
             <VSCodePanelTab id="postScript">Post Script</VSCodePanelTab>
             <VSCodePanelView id="paramsPanel">
                 <ParamsPanel
@@ -35,8 +34,7 @@ export function RequestPanel({ readOnly, document, onChange, onError }) {
             <VSCodePanelView id="bodyPanel">
                 <BodyData readOnly={readOnly} document={document} onChange={onChange} onError={onError} />
             </VSCodePanelView>
-            <VSCodePanelView id="preScriptPanel">Coming Soon...</VSCodePanelView>
-            <VSCodePanelView id="postScriptPanel">Coming Soon...</VSCodePanelView>
+            <VSCodePanelView id="postScriptPanel"></VSCodePanelView>
         </VSCodePanels>
     );
 }
