@@ -127,9 +127,6 @@ export function ResponsePanel({ readOnly, responseData }) {
             </>
         );
     }
-
-    console.log(responseData);
-
     let timeTaken = <></>;
     if (responseData.totalTimeTaken) {
         timeTaken = (
@@ -162,7 +159,7 @@ export function ResponsePanel({ readOnly, responseData }) {
                         <ParamsPanel
                             readOnly={true}
                             onChange={() => {}}
-                            params={responseData.config.headers ?? {}}
+                            params={responseData?.config?.headers ?? {}}
                             paramsArray={reqHeaders}
                             sectionName="s"
                             arraySectionName="ss"

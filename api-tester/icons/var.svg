@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512px" height="512px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>var@1x</title>
+    <g id="var" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect fill="#FFFFFF" x="0" y="0" width="512" height="512"></rect>
+        <g id="Group" transform="translate(31.000000, 63.664417)" fill="#000000">
+            <path d="M415.093863,0 L415.032313,295.929416 L321.261822,384 L95.0938628,383.736116 L95.093,220.335 L111.593,220.335 L111.593863,364.362505 L315.145026,364.6 L399.538468,285.336474 L399.593863,19 L111.593863,19 L111.593,139.335 L95.093,139.335 L95.0938628,0 L415.093863,0 Z" id="Combined-Shape"></path>
+            <text id="x-+-y" font-family="Helvetica" font-size="96" font-weight="normal">
+                <tspan x="0" y="203.335583">x + y</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

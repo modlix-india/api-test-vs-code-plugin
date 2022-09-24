@@ -1,9 +1,10 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Editor } from './components/Editor';
+
+import { APIEditorLauncher } from './components/APIEditorLauncher';
 
 const container = document.getElementById('app');
 if (container) {
     const root = createRoot(container);
-    root.render(<Editor />);
+    root.render(<APIEditorLauncher />);
 }
