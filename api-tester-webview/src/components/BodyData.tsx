@@ -1,6 +1,7 @@
 import {
     VSCodeDivider,
     VSCodeDropdown,
+    VSCodeLink,
     VSCodeOption,
     VSCodeRadio,
     VSCodeTextArea,
@@ -19,16 +20,64 @@ const rawTypes = {
     js: ['text/javascript', 'Javascript'],
 };
 
+function checkError(data, bodyType, bodySubType) {
+    if (bodyType != 'raw') return false;
+
+    if (bodySubType !== 'json') return false;
+
+    try {
+        JSON.parse(data);
+        return false;
+    } catch (err) {
+        return true;
+    }
+}
+
 export function BodyData({ readOnly, document, onChange, onError }) {
     let bodyEditor = <></>;
     let bodyType = document.backup?.bodyType;
     let bodySubType: string | undefined = document.backup?.bodySubType;
 
+    const [rawData, setRawData] = useState(document.backup?.rawData ?? '');
+    const [hasError, setHasError] = useState(checkError(rawData, bodyType, bodySubType));
+
+    useEffect(() => {
+        if (rawData === document.backup?.rawData) return;
+        setHasError(checkError(document.backup?.rawData, bodyType, bodySubType));
+        setRawData(document.backup?.rawData);
+    }, [document.backup?.rawData]);
+
+    useEffect(() => {
+        if (rawData === document.backup?.rawData) return;
+        const handle = setTimeout(() => {
+            if (bodySubType === 'json') {
+                try {
+                    let data = JSON.parse(rawData);
+                    onChange([
+                        ['backup.rawData', rawData],
+                        ['data', data],
+                    ]);
+                    setHasError(false);
+                } catch (err) {
+                    onChange([['backup.rawData', rawData]]);
+                    setHasError(true);
+                }
+            } else {
+                onChange([
+                    ['backup.rawData', rawData],
+                    ['data', rawData],
+                ]);
+                setHasError(checkError(rawData, bodyType, bodySubType));
+            }
+        }, 600);
+        return () => clearTimeout(handle);
+    }, [rawData]);
+
     if (bodyType === undefined || bodyType === null) {
-        bodyType = 'raw';
+        bodyType = 'none';
     }
 
-    if (bodySubType === undefined || bodySubType === null) {
+    if (bodyType === 'raw' && (bodySubType === undefined || bodySubType === null)) {
         bodySubType = 'json';
     }
 
@@ -47,27 +96,17 @@ export function BodyData({ readOnly, document, onChange, onError }) {
             />
         );
     } else if (bodyType === 'raw') {
-        function textAreaChanged(e) {
-            let x = (e.target as HTMLInputElement).value;
-
-            if (!deepEqual(x, document.backup.rawdata)) onChange([['backup.rawdata', x]]);
-        }
+        const textboxStyle = { fontFamily: 'monospace', border: hasError ? '2px solid red' : 'none' };
 
         bodyEditor = (
             <VSCodeTextArea
+                style={textboxStyle}
                 readOnly={readOnly}
                 rows={12}
-                value={document.backup?.rawdata ?? ''}
+                value={rawData}
                 onKeyUp={(e) => {
-                    textAreaChanged(e);
-                }}
-                onBlur={(e) => {
-                    try {
-                        let data = JSON.parse(document.backup.rawdata);
-                        onChange([['data', data]]);
-                    } catch (err) {
-                        onError(err);
-                    }
+                    let x = (e.target as HTMLInputElement).value;
+                    setRawData(x);
                 }}
             />
         );
@@ -77,7 +116,7 @@ export function BodyData({ readOnly, document, onChange, onError }) {
                 id="subtype"
                 value={bodySubType}
                 onChange={(e) => {
-                    let data: any = document.backup.rawdata;
+                    let data: any = document.backup.rawData;
                     if (e.target.value === 'json') {
                         try {
                             if (typeof data !== 'object') data = JSON.parse('' + data);
@@ -99,7 +138,7 @@ export function BodyData({ readOnly, document, onChange, onError }) {
                         ['headers.Content-Type', rawTypes[e.target.value][0]],
                         ['headersArray', ha],
                         ['data', data],
-                        ['backup.rawdata', data],
+                        ['backup.rawData', data],
                     ]);
                 }}
                 disabled={readOnly}
@@ -110,6 +149,25 @@ export function BodyData({ readOnly, document, onChange, onError }) {
                     </VSCodeOption>
                 ))}
             </VSCodeDropdown>
+        );
+    }
+
+    let beautifyLink = <></>;
+    if (bodyType === 'raw' && bodySubType === 'json') {
+        beautifyLink = (
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                <VSCodeLink
+                    onClick={() => {
+                        let data = document.backup?.rawData;
+                        if (!data) return;
+                        try {
+                            onChange([['backup.rawData', JSON.stringify(JSON.parse(data), undefined, 2)]]);
+                        } catch (err) {}
+                    }}
+                >
+                    Beautify
+                </VSCodeLink>
+            </div>
         );
     }
 
@@ -129,6 +187,7 @@ export function BodyData({ readOnly, document, onChange, onError }) {
                     </VSCodeRadio>
                 ))}
                 {subTypeEditor}
+                {beautifyLink}
             </div>
             <VSCodeDivider />
             {bodyEditor}
@@ -171,7 +230,7 @@ function toBodyType(document: any, bodySubType: string | undefined, toBodyType: 
     bodySubType = !bodySubType || bodySubType === 'none' ? 'json' : bodySubType;
 
     if (toBodyType === 'raw') {
-        let data: any = document.backup.rawdata;
+        let data: any = document.backup.rawData;
         if (bodySubType === 'json') {
             try {
                 data = JSON.parse(data);

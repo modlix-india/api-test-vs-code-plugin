@@ -71,10 +71,11 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
         function updateWebview() {
             if (workspaceFolder?.uri?.fsPath) {
                 readEnvironments(workspaceFolder?.uri);
+                const settingsPath = path.resolve(workspaceFolder.uri.fsPath, '.settings');
+                const hasSettings = fs.existsSync(settingsPath);
+                const settings = vscode.Uri.file(settingsPath);
 
-                const settings = vscode.Uri.file(path.resolve(workspaceFolder?.uri?.fsPath, '.settings'));
-                const hasSettings = vscode.workspace.fs.stat(settings);
-                hasSettings.then(() => {
+                if (hasSettings) {
                     readSettings(settings);
                     if (!_that.sWatcher) {
                         _that.sWatcher = vscode.workspace.createFileSystemWatcher(
@@ -82,7 +83,7 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
                         );
                         _that.sWatcher.onDidChange(() => readSettings(settings));
                     }
-                });
+                }
 
                 if (!_that.wsWatcher) {
                     _that.wsWatcher = vscode.workspace.createFileSystemWatcher(
@@ -115,11 +116,60 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
             }
         });
 
+        const outChannel = vscode.window.createOutputChannel('Rest API Tester');
         webviewPanel.onDidDispose(() => {
             changeDocumentSubscription.dispose();
             this.wsWatcher?.dispose();
             this.sWatcher?.dispose();
+            outChannel.dispose();
         });
+
+        const onAxiosResponse = (data: any, time: number, err?: any) => {
+            if (data?.request) {
+                delete data.request.res;
+                delete data.request.socket;
+                delete data.request._redirectable;
+
+                try {
+                    JSON.stringify(data.request);
+                } catch (err) {
+                    delete data.request;
+                }
+            }
+
+            if (err) {
+                vscode.window.showErrorMessage(`${err?.name} : ${err?.message}`);
+            }
+            webviewPanel.webview.postMessage({
+                type: PLG_MSG_TYP_DONE,
+                data: { ...data, totalTimeTaken: time },
+            });
+        };
+
+        function writeSettings(obj: any) {
+            if (!obj) {
+                return;
+            }
+            if (workspaceFolder) {
+                const settings = path.resolve(workspaceFolder.uri.fsPath, '.settings');
+                const settingsURI = vscode.Uri.file(path.resolve(workspaceFolder?.uri?.fsPath, '.settings'));
+                const hasSettings = fs.existsSync(settings);
+                if (hasSettings) {
+                    fs.readFile(settings, 'utf8', (err, data) => {
+                        try {
+                            obj = { ...JSON.parse(data), ...obj };
+                        } catch (err) {}
+                        fs.writeFile(settings, JSON.stringify(obj, undefined, 2), 'utf8', (err) => {
+                            readSettings(settingsURI);
+                        });
+                    });
+                } else {
+                    fs.writeFile(settings, JSON.stringify(obj, undefined, 2), 'utf8', (err) => {
+                        readSettings(settingsURI);
+                    });
+                }
+            }
+        }
 
         webviewPanel.webview.onDidReceiveMessage((e) => {
             switch (e.type) {
@@ -138,49 +188,86 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
                         type: PLG_MSG_TYP_RUNNING,
                     });
 
-                    runAxiosRequest(e.document, e.environment, workspaceFolder?.uri?.fsPath, (data, err) => {
-                        if (data?.request) {
-                            delete data.request.res;
-                            delete data.request.socket;
-                            delete data.request._redirectable;
-                        }
-
-                        if (err) {
-                            vscode.window.showErrorMessage(`${err?.name} : ${err?.message}`);
-                        }
-                        webviewPanel.webview.postMessage({
-                            type: PLG_MSG_TYP_DONE,
-                            data,
-                        });
-                    });
-
-                    break;
-                case MSG_TYP_ENVCHANGE:
-                    if (workspaceFolder) {
-                        const settings = path.resolve(workspaceFolder.uri.fsPath, '.settings');
-                        const settingsURI = vscode.Uri.file(path.resolve(workspaceFolder?.uri?.fsPath, '.settings'));
-                        const hasSettings = fs.existsSync(settings);
+                    if (workspaceFolder?.uri?.fsPath) {
+                        const settingsPath = path.resolve(workspaceFolder?.uri?.fsPath, '.settings');
+                        const settings = vscode.Uri.file(settingsPath);
+                        const hasSettings = fs.existsSync(settingsPath);
+                        const settingsObj: {
+                            removeValue: (x: string) => void;
+                            setValue: (x: string, val: any) => void;
+                            getValue: (x: string) => any;
+                            settings: { [key: string]: any };
+                            changed: boolean;
+                        } = {
+                            removeValue: function (x: string) {
+                                this.changed = true;
+                                delete this.settings[x];
+                            },
+                            setValue: function (x: string, val: any) {
+                                this.changed = true;
+                                this.settings[x] = val;
+                            },
+                            getValue: function (x: string): any {
+                                return this.settings[x];
+                            },
+                            settings: {},
+                            changed: false,
+                        };
                         if (hasSettings) {
-                            fs.readFile(settings, 'utf8', (err, data) => {
+                            vscode.workspace.fs.readFile(settings).then((array) => {
+                                const data = Buffer.from(array).toString();
+
                                 try {
-                                    const obj = JSON.parse(data);
-                                    obj.environment = e.environment;
-                                    fs.writeFile(settings, JSON.stringify(obj, undefined, 2), 'utf8', (err) => {
-                                        readSettings(settingsURI);
-                                    });
+                                    settingsObj.settings = JSON.parse(data);
                                 } catch (err) {}
+                                runAxiosRequest(
+                                    e.document,
+                                    e.environment,
+                                    settingsObj,
+                                    outChannel,
+                                    workspaceFolder?.uri?.fsPath,
+                                    (cData, cTime, cError) => {
+                                        if (settingsObj.changed) {
+                                            writeSettings(settingsObj.settings);
+                                        }
+                                        onAxiosResponse(cData, cTime, cError);
+                                    },
+                                );
                             });
                         } else {
-                            fs.writeFile(
-                                settings,
-                                JSON.stringify({ environment: e.environment }, undefined, 2),
-                                'utf8',
-                                (err) => {
-                                    readSettings(settingsURI);
+                            runAxiosRequest(
+                                e.document,
+                                e.environment,
+                                settingsObj,
+                                outChannel,
+                                workspaceFolder?.uri?.fsPath,
+                                (cData, cTime, cError) => {
+                                    if (settingsObj.changed) {
+                                        writeSettings(settingsObj.settings);
+                                    }
+                                    onAxiosResponse(cData, cTime, cError);
                                 },
                             );
                         }
+                    } else {
+                        runAxiosRequest(
+                            e.document,
+                            e.environment,
+                            {
+                                removeValue: (x: string) => {},
+                                setValue: (x: string, val: any) => {},
+                                getValue: (x: string) => {},
+                            },
+                            outChannel,
+                            workspaceFolder?.uri?.fsPath,
+                            onAxiosResponse,
+                        );
                     }
+
+                    break;
+                case MSG_TYP_ENVCHANGE:
+                    writeSettings({ environment: e.environment });
+                    return;
             }
         });
 
@@ -189,8 +276,12 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
 
     getHtmlForWebview(webview: vscode.Webview): string {
         if (this.context) {
-            const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'media', 'index.js'));
-            const cssUri = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, 'media', 'index.css'));
+            const scriptUri = webview.asWebviewUri(
+                vscode.Uri.joinPath(this.context.extensionUri, 'media', 'apiEditorIndex.js'),
+            );
+            const cssUri = webview.asWebviewUri(
+                vscode.Uri.joinPath(this.context.extensionUri, 'media', 'apiEditorIndex.css'),
+            );
 
             return `<!DOCTYPE html>
     <html lang="en">

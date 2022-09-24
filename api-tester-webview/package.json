@@ -4,8 +4,8 @@
     "description": "Webview for the api-tester-plugin",
     "browserslist": "> 0.5%, last 2 versions, not dead",
     "scripts": {
-        "start": "parcel watch src/index.tsx --dist-dir ../api-tester/media --no-cache",
-        "build": "parcel build src/index.tsx --dist-dir ../api-tester/media --no-cache"
+        "start": "concurrently \"parcel watch src/apiEditorIndex.tsx --dist-dir ../api-tester/media --no-cache\" \"parcel watch src/varEditorIndex.tsx --dist-dir ../api-tester/media --no-cache\"",
+        "build": "parcel build src/apiEditorIndex.tsx --dist-dir ../api-tester/media --no-cache && parcel build src/varEditorIndex.tsx --dist-dir ../api-tester/media --no-cache"
     },
     "keywords": [
         "api-tester",
@@ -37,6 +37,7 @@
         "@types/react-dom": "^18.0.6",
         "@typescript-eslint/eslint-plugin": "^5.33.0",
         "@typescript-eslint/parser": "^5.33.0",
+        "concurrently": "^7.4.0",
         "eslint": "^8.21.0",
         "eslint-plugin-react": "^7.30.1",
         "husky": "^8.0.1",

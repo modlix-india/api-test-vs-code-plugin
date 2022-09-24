@@ -5,10 +5,41 @@ import path = require('path');
 export function runAxiosRequest(
     document: any,
     environment: string,
+    settings: any,
+    outChannel: any,
     workspace: string | undefined,
-    callback: (data: any, error?: any) => void,
+    after: (data: any, time: number, error?: any) => void,
 ) {
     const request = JSON.parse(JSON.stringify(document));
+
+    function callback(cData: any, cTime: number, cError?: any) {
+        if (document?.backup?.postScript) {
+            try {
+                const fun = new Function('settings', 'console', 'response', document.backup.postScript);
+                fun(
+                    settings,
+                    {
+                        log: function () {
+                            for (let i = 0; i < arguments.length; i++) {
+                                let m = arguments[i];
+                                if (typeof arguments[i] === 'object') {
+                                    try {
+                                        m = JSON.stringify(arguments[i]);
+                                    } catch (err) {}
+                                }
+                                outChannel.appendLine(m);
+                            }
+                        },
+                    },
+                    cData,
+                );
+            } catch (err) {
+                cError = err;
+            }
+        }
+
+        after(cData, cTime, cError);
+    }
 
     delete request.paramsArray;
     delete request.headersArray;
@@ -18,12 +49,17 @@ export function runAxiosRequest(
         request.method = 'get';
     }
 
+    const start = new Date().getTime();
     if (workspace) {
         readFile(path.resolve(workspace, 'global.var'), 'utf8', (gerr, gdata) => {
-            let vars = {};
+            let vars = Object.entries(settings.settings ?? {}).reduce((a: any, [k, v]: [string, any]) => {
+                a['settings.' + k] = v;
+                return a;
+            }, {});
+
             if (!gerr) {
                 try {
-                    vars = JSON.parse(gdata).variables;
+                    vars = { ...vars, ...JSON.parse(gdata).variables };
                 } catch (error) {}
             }
             if (environment) {
@@ -36,11 +72,11 @@ export function runAxiosRequest(
                     try {
                         const processed = processVariables(vars, request);
                         axios(processed).then(
-                            (response) => callback(response),
-                            (reason) => callback(reason),
+                            (response) => callback(response, new Date().getTime() - start),
+                            (reason) => callback(reason, new Date().getTime() - start),
                         );
                     } catch (error) {
-                        callback(undefined, error);
+                        callback(undefined, new Date().getTime() - start, error);
                     }
                 });
             } else {
@@ -48,18 +84,18 @@ export function runAxiosRequest(
                     const processed = processVariables(vars, request);
 
                     axios(processed).then(
-                        (response) => callback(response),
-                        (reason) => callback(reason),
+                        (response) => callback(response, new Date().getTime() - start),
+                        (reason) => callback(reason, new Date().getTime() - start),
                     );
                 } catch (error) {
-                    callback(undefined, error);
+                    callback(undefined, new Date().getTime() - start, error);
                 }
             }
         });
     } else {
         axios(request).then(
-            (response) => callback(response),
-            (reason) => callback(reason),
+            (response) => callback(response, new Date().getTime() - start),
+            (reason) => callback(reason, new Date().getTime() - start),
         );
     }
 }

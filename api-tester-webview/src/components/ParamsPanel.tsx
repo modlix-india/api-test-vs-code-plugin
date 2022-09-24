@@ -170,6 +170,9 @@ export function ParamsPanel(props) {
                         placeholder={'Value'}
                         valueTypes={valueTypes}
                         valueType={valueType}
+                        onError={(e) => {
+                            if (onError) onError(e);
+                        }}
                     />
                 </div>
             </div>,

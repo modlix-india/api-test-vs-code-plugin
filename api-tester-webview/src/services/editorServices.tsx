@@ -45,10 +45,6 @@ export function onSend(json: any, currentEnvironment: string, vscode: any) {
 export function onDocumentChange(sectionValues: [[key: string, value: any | undefined]], json: any, vscode: any): any {
     json = duplicate(json);
     for (const [section, value] of sectionValues) {
-        if (section === 'data') {
-            makeDataObject(json, 'backup.data', value);
-        }
-
         makeDataObject(json, section, value);
     }
     vscode.postMessage({
