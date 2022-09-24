@@ -6,8 +6,7 @@ import { BodyData } from './BodyData';
 
 function checkError(code) {
     try {
-        const fun = new Function('settings', 'console', 'response', code);
-        // fun({ removeValue: (x) => {}, setValue: (x, val) => {}, getValue: (x) => {} }, { log: () => {} });
+        new Function('settings', 'console', 'response', code);
         return '';
     } catch (err) {
         return err.message;

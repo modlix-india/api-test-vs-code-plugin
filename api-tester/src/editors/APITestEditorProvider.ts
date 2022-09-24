@@ -196,6 +196,7 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
                             removeValue: (x: string) => void;
                             setValue: (x: string, val: any) => void;
                             getValue: (x: string) => any;
+                            getSettings: () => { [key: string]: any };
                             settings: { [key: string]: any };
                             changed: boolean;
                         } = {
@@ -209,6 +210,9 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
                             },
                             getValue: function (x: string): any {
                                 return this.settings[x];
+                            },
+                            getSettings: function () {
+                                return this.settings;
                             },
                             settings: {},
                             changed: false,
@@ -257,6 +261,9 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
                                 removeValue: (x: string) => {},
                                 setValue: (x: string, val: any) => {},
                                 getValue: (x: string) => {},
+                                getSettings: function () {
+                                    return {};
+                                },
                             },
                             outChannel,
                             workspaceFolder?.uri?.fsPath,
