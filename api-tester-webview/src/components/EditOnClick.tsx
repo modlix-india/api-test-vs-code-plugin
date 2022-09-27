@@ -36,7 +36,7 @@ function getValueByType(vt, v, onError) {
 export function EditOnClick(props) {
     const {
         readOnly,
-        value: inValue,
+        value,
         onChange,
         placeholder,
         valueType = EDITOR_TYPES.STRING,
@@ -45,26 +45,27 @@ export function EditOnClick(props) {
 
     const onError: (err: any) => void = props.onError ? props.onError : undefined;
 
-    const [value, setValue] = useState(inValue);
+    // const [value, setValue] = useState(inValue);
 
-    useEffect(() => {
-        if (deepEqual(value, inValue)) return;
-        setValue(inValue);
-    }, [inValue]);
+    // useEffect(() => {
+    //     if (deepEqual(value, inValue)) return;
+    //     setValue(inValue);
+    // }, [inValue]);
 
-    useEffect(() => {
-        const handle = setTimeout(() => {
-            let v = getValueByType(valueType, value, onError);
-            if (deepEqual(v, inValue)) return;
-            onChange(valueType, v);
-        }, 600);
+    // useEffect(() => {
+    //     const handle = setTimeout(() => {
+    //         let v = getValueByType(valueType, value, onError);
+    //         if (deepEqual(v, inValue)) return;
+    //         onChange(valueType, v);
+    //     }, 200);
 
-        return () => clearTimeout(handle);
-    }, [value]);
+    //     return () => clearTimeout(handle);
+    // }, [value]);
 
     function onChangeCallBack(v) {
-        if (v === value) return;
-        setValue(v);
+        v = getValueByType(valueType, v, onError);
+        if (deepEqual(v, value)) return;
+        onChange(valueType, v);
     }
 
     function onTypeChangeCallBack(vt) {

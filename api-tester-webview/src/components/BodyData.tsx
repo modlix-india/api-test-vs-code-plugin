@@ -38,40 +38,31 @@ export function BodyData({ readOnly, document, onChange, onError }) {
     let bodyType = document.backup?.bodyType;
     let bodySubType: string | undefined = document.backup?.bodySubType;
 
-    const [rawData, setRawData] = useState(document.backup?.rawData ?? '');
+    const rawData = document.backup?.rawData;
     const [hasError, setHasError] = useState(checkError(rawData, bodyType, bodySubType));
 
-    useEffect(() => {
-        if (rawData === document.backup?.rawData) return;
-        setHasError(checkError(document.backup?.rawData, bodyType, bodySubType));
-        setRawData(document.backup?.rawData);
-    }, [document.backup?.rawData]);
+    function rawDataChange(changedData) {
+        if (changedData === document.backup?.rawData) return;
 
-    useEffect(() => {
-        if (rawData === document.backup?.rawData) return;
-        const handle = setTimeout(() => {
-            if (bodySubType === 'json') {
+        if (bodyType === 'raw' && bodySubType === 'json') {
+            onChange([['backup.rawData', changedData]]);
+            setTimeout(() => {
                 try {
-                    let data = JSON.parse(rawData);
-                    onChange([
-                        ['backup.rawData', rawData],
-                        ['data', data],
-                    ]);
+                    let data = JSON.parse(changedData);
+                    onChange([['data', data]]);
                     setHasError(false);
                 } catch (err) {
-                    onChange([['backup.rawData', rawData]]);
                     setHasError(true);
                 }
-            } else {
-                onChange([
-                    ['backup.rawData', rawData],
-                    ['data', rawData],
-                ]);
-                setHasError(checkError(rawData, bodyType, bodySubType));
-            }
-        }, 600);
-        return () => clearTimeout(handle);
-    }, [rawData]);
+            }, 100);
+        } else {
+            onChange([
+                ['backup.rawData', changedData],
+                ['data', changedData],
+            ]);
+            setHasError(checkError(changedData, bodyType, bodySubType));
+        }
+    }
 
     if (bodyType === undefined || bodyType === null) {
         bodyType = 'none';
@@ -106,7 +97,7 @@ export function BodyData({ readOnly, document, onChange, onError }) {
                 value={rawData}
                 onKeyUp={(e) => {
                     let x = (e.target as HTMLInputElement).value;
-                    setRawData(x);
+                    rawDataChange(x);
                 }}
             />
         );

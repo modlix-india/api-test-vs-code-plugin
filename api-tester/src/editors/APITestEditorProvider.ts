@@ -17,6 +17,7 @@ const PLG_MSG_TYP_CURRENT_ENVIRONMENT = 'currentEnvironment';
 export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
     private sWatcher: vscode.FileSystemWatcher | undefined;
     private wsWatcher: vscode.FileSystemWatcher | undefined;
+    private docBackup: any = {};
 
     public static register(context: vscode.ExtensionContext): vscode.Disposable {
         const provider = new APITestEditorProvider(context);
@@ -102,6 +103,10 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
                 });
             }
 
+            if (_that.docBackup[document.uri.path]) {
+                return;
+            }
+
             webviewPanel.webview.postMessage({
                 type: PLG_MSG_TYP_UPDATE,
                 name: document.fileName,
@@ -118,6 +123,7 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
 
         const outChannel = vscode.window.createOutputChannel('Rest API Tester');
         webviewPanel.onDidDispose(() => {
+            delete this.docBackup[document.uri.path];
             changeDocumentSubscription.dispose();
             this.wsWatcher?.dispose();
             this.sWatcher?.dispose();
@@ -174,6 +180,7 @@ export class APITestEditorProvider implements vscode.CustomTextEditorProvider {
         webviewPanel.webview.onDidReceiveMessage((e) => {
             switch (e.type) {
                 case MSG_TYP_DOCCHANGE:
+                    this.docBackup[document.uri.path] = e.document;
                     this.updateTextDocument(document, e.document);
                     break;
                 case MSG_TYP_ERROR:

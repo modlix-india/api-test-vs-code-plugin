@@ -7,6 +7,8 @@ const MSG_TYP_DOCCHANGE = 'docchange';
 const PLG_MSG_TYP_UPDATE = 'update';
 
 export class VARTestEditorProvider implements vscode.CustomTextEditorProvider {
+    private docBackup: any = {};
+
     public static register(context: vscode.ExtensionContext): vscode.Disposable {
         const provider = new VARTestEditorProvider(context);
         const providerRegistration = vscode.window.registerCustomEditorProvider('api-tester.varEditor', provider, {
@@ -29,7 +31,11 @@ export class VARTestEditorProvider implements vscode.CustomTextEditorProvider {
         webviewPanel.webview.html = this.getHtmlForWebview(webviewPanel.webview);
         const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
 
+        let _that = this;
         function updateWebview() {
+            if (_that.docBackup[document.uri.path]) {
+                return;
+            }
             webviewPanel.webview.postMessage({
                 type: PLG_MSG_TYP_UPDATE,
                 name: document.fileName,
@@ -45,12 +51,14 @@ export class VARTestEditorProvider implements vscode.CustomTextEditorProvider {
         });
 
         webviewPanel.onDidDispose(() => {
+            delete this.docBackup[document.uri.path];
             changeDocumentSubscription.dispose();
         });
 
         webviewPanel.webview.onDidReceiveMessage((e) => {
             switch (e.type) {
                 case MSG_TYP_DOCCHANGE:
+                    this.docBackup[document.uri.path] = e.document;
                     this.updateTextDocument(document, e.document);
                     break;
                 case MSG_TYP_ERROR:

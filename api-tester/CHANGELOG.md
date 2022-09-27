@@ -35,3 +35,8 @@ All notable changes to the "rest-api-tester" extension will be documented in thi
 -   Fixed javascript post sending errors issue.
 -   Added Console output to the output console.
 -   Removed the unnecessary File Theme Icon option.
+
+## [1.1.5] - 2022-09-27
+
+-   Fixed missing letters when typing fast in editors.
+-   Communication between webview and the plugin is reduced.

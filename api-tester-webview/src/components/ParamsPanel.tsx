@@ -76,22 +76,17 @@ export function ParamsPanel(props) {
     }
 
     function keyChanged(id, k, key, v, include, valueType) {
-        if (key === '' || key.trim() === '' || key === k) return;
-        if (k === '') {
-            onChange([
-                [sectionName, { ...params, [key]: v }],
-                [arraySectionName, [...(paramsArray ?? []), [id, key, v, include]]],
-            ]);
-            return;
-        }
+        if (key === k) return;
+
         const newParams = { ...params, [key]: v };
         delete newParams[k];
         let newParamsArray = [...(paramsArray ?? [])];
-        newParamsArray.splice(
-            newParamsArray.findIndex(([oid]) => oid == id),
-            1,
-            [id, key, v, include, valueType],
-        );
+        const ind = newParamsArray.findIndex(([oid]) => oid == id);
+        if (ind !== -1) {
+            newParamsArray.splice(ind, 1, [id, key, v, include, valueType]);
+        } else {
+            newParamsArray.push([id, key, v, include, valueType]);
+        }
         onChange([
             [sectionName, newParams],
             [arraySectionName, newParamsArray],
@@ -99,8 +94,6 @@ export function ParamsPanel(props) {
     }
 
     function valueChanged(id, k, value, v, include, type) {
-        if (value === '') value = undefined;
-
         const newParams = { ...params, [k]: value };
         let newParamsArray = [...(paramsArray ?? [])];
         newParamsArray.splice(
@@ -128,7 +121,7 @@ export function ParamsPanel(props) {
                 style={{ display: 'flex', flexDirection: 'row', border: '1px solid  var(--divider-background)' }}
             >
                 <div style={firstColumn}>
-                    {k === '' || readOnly ? (
+                    {(k === '' && v === '') || readOnly ? (
                         <></>
                     ) : (
                         <>

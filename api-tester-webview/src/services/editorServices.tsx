@@ -62,5 +62,5 @@ export function onChangeEnvironment(env: string, vscode: any) {
 }
 
 function duplicate(json: any): any {
-    return JSON.parse(JSON.stringify(json));
+    return json;
 }

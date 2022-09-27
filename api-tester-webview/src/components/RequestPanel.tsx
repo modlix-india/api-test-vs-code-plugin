@@ -14,22 +14,14 @@ function checkError(code) {
 }
 
 export function RequestPanel({ readOnly, document, onChange, onError }) {
-    const [postScript, setPostScript] = useState(document.backup?.postScript ?? '');
+    const postScript = document.backup?.postScript ?? '';
     const [hasPostScriptError, setHasPostScriptError] = useState<string>(checkError(postScript));
 
-    useEffect(() => {
-        if (postScript == document.backup?.postScript) return;
-        setPostScript(document.backup?.postScript ?? '');
-    }, [document.backup?.postScript]);
-
-    useEffect(() => {
-        setHasPostScriptError(checkError(postScript));
-        if (postScript === (document.backup?.postScript ?? '')) return;
-        const handle = setTimeout(() => {
-            onChange([['backup.postScript', postScript]]);
-        }, 600);
-        return () => clearTimeout(handle);
-    }, [postScript]);
+    function onPostScriptChange(changedPostScript) {
+        setHasPostScriptError(checkError(changedPostScript));
+        if (changedPostScript === (document.backup?.postScript ?? '')) return;
+        onChange([['backup.postScript', changedPostScript]]);
+    }
 
     const textboxStyle = { fontFamily: 'monospace', flex: 1, border: hasPostScriptError ? '2px solid red' : 'none' };
 
@@ -63,7 +55,7 @@ export function RequestPanel({ readOnly, document, onChange, onError }) {
                 value={postScript}
                 onKeyUp={(e) => {
                     let x = (e.target as HTMLInputElement).value;
-                    setPostScript(x);
+                    onPostScriptChange(x);
                 }}
             />
         </div>

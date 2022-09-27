@@ -11,21 +11,6 @@ export function AddressBar({
     currentEnvironment,
     onEnvironmentChange,
 }) {
-    const [url, setUrl] = useState(document.url ?? '');
-
-    useEffect(() => {
-        if (url == document.url) return;
-        setUrl(document.url ?? '');
-    }, [document.url]);
-
-    useEffect(() => {
-        const handle = setTimeout(() => {
-            if (url === document.url) return;
-            onUrlChange(url);
-        }, 600);
-        return () => clearTimeout(handle);
-    }, [url]);
-
     return (
         <div style={{ display: 'flex', flexDirection: 'row', gap: '5px' }}>
             <VSCodeDropdown
@@ -58,14 +43,14 @@ export function AddressBar({
             </VSCodeDropdown>
             <VSCodeTextField
                 id="address"
-                value={url}
+                value={document.url ?? ''}
                 onKeyUp={(e) => {
                     if (e.key === 'Enter') {
                         setTimeout(() => onSend(), 800);
                         return;
                     }
                     let v = (e.target as HTMLInputElement).value;
-                    setUrl(v);
+                    onUrlChange(v);
                 }}
                 style={{ flex: '1' }}
                 disabled={readOnly}
