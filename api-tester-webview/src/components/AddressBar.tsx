@@ -50,6 +50,7 @@ export function AddressBar({
                         return;
                     }
                     let v = (e.target as HTMLInputElement).value;
+                    if (v == document.url) return;
                     onUrlChange(v);
                 }}
                 style={{ flex: '1' }}

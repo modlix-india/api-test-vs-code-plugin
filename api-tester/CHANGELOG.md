@@ -40,3 +40,9 @@ All notable changes to the "rest-api-tester" extension will be documented in thi
 
 -   Fixed missing letters when typing fast in editors.
 -   Communication between webview and the plugin is reduced.
+
+## [1.1.6] - 2022-09-28
+
+-   Fixed issues with jumping letters in entering data.
+-   Fixed Save not working after changing the data in the address bar.
+-   Fixed Last response is shown for an empty body.

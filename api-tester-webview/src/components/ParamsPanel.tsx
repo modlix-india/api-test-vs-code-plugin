@@ -4,6 +4,7 @@ import '@vscode/codicons/dist/codicon.css';
 
 import { UUID } from '../util/uuid';
 import { EditOnClick, EDITOR_TYPES } from './EditOnClick';
+import { deepEqual } from '../util/deepEqual';
 
 const firstColumn = {
     width: '55px',
@@ -36,12 +37,19 @@ export function ParamsPanel(props) {
     const {
         readOnly,
         onChange,
-        params,
-        paramsArray,
+        params: inParams,
+        paramsArray: inParamsArray,
         sectionName,
         arraySectionName,
         valueTypes = [EDITOR_TYPES.STRING],
     } = props;
+    const [params, setParams] = useState(inParams);
+    const [paramsArray, setParamsArray] = useState(inParamsArray);
+
+    useEffect(() => {
+        setParams(inParams);
+        setParamsArray(inParamsArray);
+    }, [inParams, inParamsArray]);
 
     function deleteCallBack(k, id) {
         const newParams = { ...params };
@@ -56,6 +64,8 @@ export function ParamsPanel(props) {
             [sectionName, newParams],
             [arraySectionName, newParamsArray],
         ]);
+        setParams(newParams);
+        setParamsArray(newParamsArray);
     }
 
     function includeCallBack(e, k, id, v, valueType) {
@@ -73,6 +83,8 @@ export function ParamsPanel(props) {
             [sectionName, newParams],
             [arraySectionName, newParamsArray],
         ]);
+        setParams(newParams);
+        setParamsArray(newParamsArray);
     }
 
     function keyChanged(id, k, key, v, include, valueType) {
@@ -91,9 +103,12 @@ export function ParamsPanel(props) {
             [sectionName, newParams],
             [arraySectionName, newParamsArray],
         ]);
+        setParams(newParams);
+        setParamsArray(newParamsArray);
     }
 
     function valueChanged(id, k, value, v, include, type) {
+        if (deepEqual(value, v)) return;
         const newParams = { ...params, [k]: value };
         let newParamsArray = [...(paramsArray ?? [])];
         newParamsArray.splice(
@@ -106,6 +121,8 @@ export function ParamsPanel(props) {
             [sectionName, newParams],
             [arraySectionName, newParamsArray],
         ]);
+        setParams(newParams);
+        setParamsArray(newParamsArray);
     }
 
     const onError: (err: any) => void = props.onError ? props.onError : undefined;

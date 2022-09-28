@@ -57,13 +57,12 @@ export function ResponsePanel({ readOnly, responseData }) {
             Object.entries(responseData?.headers ?? responseData?.response?.headers ?? {}).map((e) => [e[0], ...e]),
         );
         if (!responseData) return;
-        const rt = responseData.data ?? responseData.response?.data;
-        if (rt) {
-            if (responseData?.response?.headers['content-type']?.indexOf('json') != -1) {
-                setResponseText(JSON.stringify(rt, undefined, 2));
-            } else {
-                setResponseText(rt);
-            }
+        const rt = responseData.data ?? responseData.response?.data ?? '';
+
+        if (responseData?.response?.headers['content-type']?.indexOf('json') != -1) {
+            setResponseText(JSON.stringify(rt, undefined, 2));
+        } else {
+            setResponseText(rt);
         }
     }, [responseData]);
 
